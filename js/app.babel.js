@@ -4,6 +4,7 @@ import Module         from './components/module';
 import Ball           from './components/ball';
 import Ball2          from './components/ball2';
 import Ball3          from './components/ball3';
+import Ball4          from './components/ball4';
 import COLORS         from './components/colors';
 import C              from './components/constants';
 
@@ -145,8 +146,7 @@ class Demo extends Module {
     })
     .then({  angle: 90, easing: 'cubic.in', duration: C.LINE1_DURATION });
     // line4.el.classList.add( LINE_CLASSES.line );
-    const circle4 = this._addCircle( line4 );
-
+    const ball4 = new Ball4({ parent: line4.el });
 
     const shadowOpts = {
       fill:         COLORS.BLACK,
@@ -189,11 +189,44 @@ class Demo extends Module {
       })
       .then(shadowBounce);
 
+    const shadow1Opts = {
+      ...shadowOpts,
+      left:       '85%',
+      x:          { [3.75*LINE1_SHIFT] : 0 },
+      duration:   C.LINE1_DURATION,
+      easing:     'cubic.in',
+      opacity:    {.03 : .15},
+      delay:      0
+    }
+
+    const shadow1 = new mojs.Shape(shadow1Opts)
+      .then({
+        delay: 2 * C.LINE1_DURATION,
+        x: 3.75*LINE1_SHIFT,
+        opacity: .03,
+        easing: 'cubic.out'
+      });
+
+    const shadow4 = new mojs.Shape({
+      ...shadow1Opts,
+      delay: C.LINE1_DURATION,
+      left: '13%',
+      x:   { 0 : -3.75*LINE1_SHIFT },
+      easing: 'cubic.out',
+      opacity:  {.15 : .03},
+    })
+      .then({
+        delay: 0,
+        x: 0,
+        opacity: .15,
+        easing: 'cubic.in'
+      });
+
 
     mainTimeline.add(
       line, line2, line3, line4,
-      ball2, ball3,
-      shadow2, shadow3
+      ball2, ball3, ball4,
+      shadow1, shadow2, shadow3, shadow4
     );
 
     ;( new MojsPlayer({ add: mainTimeline }) )
