@@ -1,33 +1,39 @@
 import Polyfill       from 'classlist-polyfill';
 import MojsPlayer     from 'mojs-player'
 import Module         from './components/module';
-import TriangleLines  from './components/triangle-lines';
-import Triangles      from './components/triangles';
-import GreenScene     from './components/green-scene';
-import Circle         from './components/circle';
-import Logo           from './components/logo';
+import Ball           from './components/ball';
+import Ball2          from './components/ball2';
+import Ball3          from './components/ball3';
+import COLORS         from './components/colors';
+import C              from './components/constants';
 
-// require('css/blocks/mojs-player.postcss.css');
-// let CLASSES = require('css/blocks/mojs-player.postcss.css.json');
+require('../css/main.postcss.css');
+const CLASSES = require('../css/main.postcss.css.json');
 
-const LINE2_SHIFT = 15;
-const LINE3_SHIFT = 20;
-const LINE1_SHIFT = 2*LINE3_SHIFT;
+require('../css/blocks/line.postcss.css');
+const LINE_CLASSES = require('../css/blocks/line.postcss.css.json');
 
-const LINE1_DURATION = 300
-const LINE2_BOUNCE_DURATION = LINE1_DURATION/2;
-const LINE3_BOUNCE_DURATION = LINE1_DURATION/3;
+require('../css/blocks/scene.postcss.css');
+const SCENE_CLASSES = require('../css/blocks/scene.postcss.css.json');
+
+const LINE2_SHIFT = 4;
+const LINE3_SHIFT = 6;
+const LINE1_SHIFT = 45;
+
+const LINE2_BOUNCE_DURATION = C.LINE1_DURATION/2;
+const LINE3_BOUNCE_DURATION = C.LINE1_DURATION;
 
 
-const COLLIDE_DURATION = .25 * LINE1_DURATION;
-const BOUNCE_DURATION  = LINE1_DURATION - COLLIDE_DURATION;
+const COLLIDE_DURATION = .25 * C.LINE1_DURATION;
+const BOUNCE_DURATION  = C.LINE1_DURATION - COLLIDE_DURATION;
 
-const CIRCLE_RADIUS = 50;
-const LINE_HEIGHT   = 1.5*CIRCLE_RADIUS;
+const CIRCLE_RADIUS = 48;
+const LINE_HEIGHT   = 176/2;
 
 const opts = {
   shape:        'line',
-  stroke:       'white',
+  stroke:       COLORS.YELLOW,
+  strokeWidth:  3,
   radius:       LINE_HEIGHT,
   left:         '50%', top: '50%',
   origin:       '0 50%',
@@ -37,16 +43,16 @@ const opts = {
   y:           -2*LINE_HEIGHT
 };
 
-const circleOpts = {
-  fill:         'none',
-  stroke:       'white',
-  radius:       CIRCLE_RADIUS,
-  shape:        'circle',
-  isShowStart:  1,
-  top:          '50%',
-  left:         '100%',
-  x:            CIRCLE_RADIUS,
-}
+// const circleOpts = {
+//   fill:         'none',
+//   stroke:       'white',
+//   radius:       CIRCLE_RADIUS,
+//   shape:        'circle',
+//   isShowStart:  1,
+//   top:          '50%',
+//   left:         '100%',
+//   x:            CIRCLE_RADIUS,
+// }
 
 class Demo extends Module {
   /*
@@ -54,6 +60,11 @@ class Demo extends Module {
     @private
   */
   _render () {
+    super._render();
+
+    this.el.classList.add( 'scene' );
+    opts.parent = this.el;
+
     const mainTimeline = ( new mojs.Timeline({
       onComplete () {
         // collision1.tune({
@@ -64,16 +75,20 @@ class Demo extends Module {
       }
     }) );
 
+    const BASE_SHIFT = 2.6*LINE_HEIGHT;
+
     const line = new mojs.Shape({
         ...opts,
-        x:          2*LINE_HEIGHT,
-        duration:   LINE1_DURATION
+        x:          BASE_SHIFT,
+        duration:   C.LINE1_DURATION
       })
       .then({
         angle: 90 - LINE1_SHIFT,
-        delay: 2*LINE1_DURATION,
+        delay: 2*C.LINE1_DURATION,
         easing: 'cubic.out'
       });
+
+    // line.el.classList.add( LINE_CLASSES.line );
 
     const circle1 = this._addCircle( line );
 
@@ -86,52 +101,100 @@ class Demo extends Module {
     const line2 = new mojs.Shape({
       ...opts,
       easing:       'cubic.out',
-      x:            2*LINE_HEIGHT - 2*CIRCLE_RADIUS,
+      x:            BASE_SHIFT - 2*CIRCLE_RADIUS,
       angle:        { 90 : 90 + LINE2_SHIFT },
-      delay:        LINE1_DURATION,
+      delay:        C.LINE1_DURATION,
       duration:     COLLIDE_DURATION,
     })
     .then(bounceReturn)
     .then({
       angle:      90 - LINE3_SHIFT,
       duration:   COLLIDE_DURATION,
-      delay:      LINE1_DURATION,
+      delay:      C.LINE1_DURATION,
       easing:     'cubic.out'
     })
-    .then(bounceReturn)
-    this._addCircle( line2 );
+    .then(bounceReturn);
+
+    const ball2 = new Ball2({ parent: line2.el });
 
     const line3 = new mojs.Shape({
       ...opts,
       easing:       'cubic.out',
-      x:            2*LINE_HEIGHT - 4*CIRCLE_RADIUS,
+      x:            BASE_SHIFT - 4*CIRCLE_RADIUS,
       angle:        { 90 : 90 + LINE3_SHIFT },
-      delay:        LINE1_DURATION,
+      delay:        C.LINE1_DURATION,
       duration:     COLLIDE_DURATION,
     })
     .then(bounceReturn)
     .then({
       angle:      90 - LINE2_SHIFT,
       duration:   COLLIDE_DURATION,
-      delay:      LINE1_DURATION,
+      delay:      C.LINE1_DURATION,
       easing:     'cubic.out'
     })
     .then(bounceReturn);
-    this._addCircle( line3 );
+    const ball3 = new Ball3({ parent: line3.el });
 
     const line4 = new mojs.Shape({
       ...opts,
-      x:            2*LINE_HEIGHT - 6*CIRCLE_RADIUS,
+      x:            BASE_SHIFT - 6*CIRCLE_RADIUS,
       angle:        { 90 : 90 + LINE1_SHIFT },
       easing:       'cubic.out',
-      duration:     LINE1_DURATION,
-      delay:        LINE1_DURATION,
+      duration:     C.LINE1_DURATION,
+      delay:        C.LINE1_DURATION,
     })
-    .then({  angle: 90, easing: 'cubic.in', duration: LINE1_DURATION });
-    
+    .then({  angle: 90, easing: 'cubic.in', duration: C.LINE1_DURATION });
+    // line4.el.classList.add( LINE_CLASSES.line );
     const circle4 = this._addCircle( line4 );
 
-    mainTimeline.add( line, line2, line3, line4 );
+
+    const shadowOpts = {
+      fill:         COLORS.BLACK,
+      opacity:      .15,
+      radiusX:      47,
+      radiusY:      7,
+      parent:       this.el,
+      left:         '61%',
+      top:          '90%',
+      isShowStart:  true,
+      easing:       'cubic.out',
+      x:            { 0: -4*LINE3_SHIFT },
+      delay:        C.LINE1_DURATION,
+      duration:     COLLIDE_DURATION,
+    }
+
+    const shadowBounce = {
+      ...bounceReturn,
+      angle:      0,
+      x:          0
+    }
+    
+    const shadow2 = new mojs.Shape(shadowOpts)
+      .then(shadowBounce)
+      .then({
+        ...shadowOpts,
+        x:  { 0: 4*LINE3_SHIFT },
+      })
+      .then(shadowBounce);
+
+    const shadow3Opts = {
+      ...shadowOpts,
+      left:         '37%',
+    }
+    const shadow3 = new mojs.Shape(shadow3Opts)
+      .then(shadowBounce)
+      .then({
+        ...shadow3Opts,
+        x:  { 0: 4*LINE3_SHIFT },
+      })
+      .then(shadowBounce);
+
+
+    mainTimeline.add(
+      line, line2, line3, line4,
+      ball2, ball3,
+      shadow2, shadow3
+    );
 
     ;( new MojsPlayer({ add: mainTimeline }) )
       .el.style[ 'z-index' ] = 10;
@@ -143,10 +206,7 @@ class Demo extends Module {
     @param {Object} Shape module instance.
   */
   _addCircle ( module ) {
-    return new mojs.Shape({
-      ...circleOpts,
-      parent:  module.el,
-    });
+    return new Ball( { parent:  module.el } );
   }
 }
 

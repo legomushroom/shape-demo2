@@ -1,14 +1,9 @@
 
 const COLORS = {
-  WHITE:   '#ffffff',
-  BLACK:   '#000000',
-  GREEN:   '#49F2CC',
-  PINK:    '#FFE202',
-  GREY:    '#29363B',
-  CYAN:    'cyan',
-  YELLOW:  '#FFE202',
-  // HOTPINK: '#8E0CE8',
-  HOTPINK: 'deeppink',
+  MAIN_RED: '#EA485C',
+  YELLOW:   '#FFCEA5',
+  BLACK:    '#29363B',
+  WHITE:    'white'
 }
 
 export default COLORS;

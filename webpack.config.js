@@ -10,7 +10,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.(json)$/, exclude: /node_modules/, loaders: ['json-loader'] },
-      { test: /\.(jsx|es6.js|babel.js)$/,
+      { test: /\.(jsx|es6.js|babel.js|.js)$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
@@ -28,7 +28,8 @@ module.exports = {
     ]
   },
   postcss: function () {
-    return [ require('precss'), require('postcss-cssnext'), require('postcss-modules') ];
+    // require('postcss-modules')
+    return [ require('precss'), require('postcss-cssnext') ];
   },
   output: {
     path:         __dirname + '/build',
