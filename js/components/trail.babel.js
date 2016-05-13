@@ -18,7 +18,7 @@ class Trail extends Module {
       angle:      205,
       delay:      p.delay,
       duration:   C.LINE1_DURATION/4,
-      strokeWidth: { 3: 1 },
+      strokeWidth: { 10: 1 },
       isShowStart: true,
       easing:     'linear.none'
     }

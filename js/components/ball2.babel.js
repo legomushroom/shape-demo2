@@ -1,6 +1,7 @@
-import Ball   from './ball';
-import COLORS from './colors';
-import C      from './constants';
+import Ball       from './ball';
+import Collision  from './collision';
+import COLORS     from './colors';
+import C          from './constants';
 
 require('../../css/blocks/ball.postcss.css');
 // let CLASSES = require('../../css/blocks/ball.postcss.css.json');
@@ -22,7 +23,8 @@ class Ball2 extends Ball {
   _addEyes () {
     const EYE_DURATION = 100;
     const repeat = 2 * C.LINE1_DURATION/EYE_DURATION - 1;
-    this.timeline = new mojs.Timeline({ repeat: repeat });
+    this.eyesTimeline = new mojs.Timeline({ repeat: repeat });
+    this.timeline = new mojs.Timeline();
 
     const baseAngle = 160
     const opts = {
@@ -95,7 +97,11 @@ class Ball2 extends Ball {
       top:          '48%',
     }).then(glareReturnOpts);
 
-    this.timeline.add( eye1, eye2, mouth, glare1, glare2 );
+    this.eyesTimeline.add( eye1, eye2, mouth, glare1, glare2 );
+    this.timeline.add(
+      this.eyesTimeline,
+      new Collision({ parent: this.el, delay: C.LINE1_DURATION, direction: -1 })
+    )
   }
 }
 

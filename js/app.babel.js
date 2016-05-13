@@ -56,16 +56,6 @@ class Demo extends Module {
     this.el.classList.add( 'scene' );
     opts.parent = this.el;
 
-    const mainTimeline = ( new mojs.Timeline({
-      onComplete () {
-        // collision1.tune({
-        //   childOptions: {
-        //     pathScale: 'rand(.25, 1)'
-        //   }
-        // });
-      }
-    }) );
-
     const BASE_SHIFT = 2.6*LINE_HEIGHT;
 
     const line = new mojs.Shape({
@@ -213,14 +203,18 @@ class Demo extends Module {
         easing: 'cubic.in'
       });
 
+    const mainTimeline = new mojs.Timeline();
+
     mainTimeline.add(
       line, line2, line3, line4,
       ball1, ball2, ball3, ball4,
       shadow1, shadow2, shadow3, shadow4,
-    );
+    )
+      // .play();
 
     ;( new MojsPlayer({ add: mainTimeline }) )
       .el.style[ 'z-index' ] = 10;
+
   }
 }
 

@@ -1,8 +1,9 @@
 import Ball        from './ball';
 import Trail       from './trail';
 import RightTrail  from './right-trail';
+import Collision   from './collision';
 import COLORS      from './colors';
-import C            from './constants';
+import C           from './constants';
 
 require('../../css/blocks/ball.postcss.css');
 // let CLASSES = require('../../css/blocks/ball.postcss.css.json');
@@ -63,7 +64,8 @@ class Ball4 extends Ball {
     return timeline.add(
       mouth,
       (new Trail({ parent: this.el, delay: 2.7*C.LINE1_DURATION })),
-      (new RightTrail({ parent: this.el, delay: 1.1*C.LINE1_DURATION }))
+      (new RightTrail({ parent: this.el, delay: 1.1*C.LINE1_DURATION })),
+      new Collision({ parent: this.el, delay: 3*C.LINE1_DURATION })
     );
   }
 }

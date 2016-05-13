@@ -93,15 +93,15 @@
 
 	var _ball4 = _interopRequireDefault(_ball3);
 
-	var _ball5 = __webpack_require__(96);
+	var _ball5 = __webpack_require__(98);
 
 	var _ball6 = _interopRequireDefault(_ball5);
 
-	var _ball7 = __webpack_require__(97);
+	var _ball7 = __webpack_require__(99);
 
 	var _ball8 = _interopRequireDefault(_ball7);
 
-	var _ball9 = __webpack_require__(98);
+	var _ball9 = __webpack_require__(100);
 
 	var _ball10 = _interopRequireDefault(_ball9);
 
@@ -109,20 +109,20 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(96);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(99);
-	var CLASSES = __webpack_require__(101);
+	__webpack_require__(101);
+	var CLASSES = __webpack_require__(103);
 
-	__webpack_require__(102);
-	var LINE_CLASSES = __webpack_require__(104);
+	__webpack_require__(104);
+	var LINE_CLASSES = __webpack_require__(106);
 
-	__webpack_require__(105);
-	var SCENE_CLASSES = __webpack_require__(107);
+	__webpack_require__(107);
+	var SCENE_CLASSES = __webpack_require__(109);
 
 	var LINE2_SHIFT = 4;
 	var LINE3_SHIFT = 6;
@@ -170,16 +170,6 @@
 
 	    this.el.classList.add('scene');
 	    opts.parent = this.el;
-
-	    var mainTimeline = new mojs.Timeline({
-	      onComplete: function onComplete() {
-	        // collision1.tune({
-	        //   childOptions: {
-	        //     pathScale: 'rand(.25, 1)'
-	        //   }
-	        // });
-	      }
-	    });
 
 	    var BASE_SHIFT = 2.6 * LINE_HEIGHT;
 
@@ -302,7 +292,10 @@
 	      easing: 'cubic.in'
 	    });
 
-	    mainTimeline.add(line, line2, line3, line4, ball1, ball2, ball3, ball4, shadow1, shadow2, shadow3, shadow4);
+	    var mainTimeline = new mojs.Timeline();
+
+	    mainTimeline.add(line, line2, line3, line4, ball1, ball2, ball3, ball4, shadow1, shadow2, shadow3, shadow4)
+	    // .play();
 
 	    ;new _mojsPlayer2.default({ add: mainTimeline }).el.style['z-index'] = 10;
 	  };
@@ -11920,11 +11913,11 @@
 
 	var _ball2 = _interopRequireDefault(_ball);
 
-	var _trail = __webpack_require__(108);
+	var _trail = __webpack_require__(95);
 
 	var _trail2 = _interopRequireDefault(_trail);
 
-	var _rightTrail = __webpack_require__(109);
+	var _rightTrail = __webpack_require__(97);
 
 	var _rightTrail2 = _interopRequireDefault(_rightTrail);
 
@@ -11932,7 +11925,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(96);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -12186,6 +12179,103 @@
 
 /***/ },
 /* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _extends2 = __webpack_require__(2);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _classCallCheck2 = __webpack_require__(40);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(41);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(77);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(87);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _constants = __webpack_require__(96);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Trail = function (_Module) {
+	  (0, _inherits3.default)(Trail, _Module);
+
+	  function Trail() {
+	    (0, _classCallCheck3.default)(this, Trail);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  Trail.prototype._vars = function _vars() {
+	    var p = this._props;
+	    this.trailOpts = {
+	      fill: 'none',
+	      stroke: 'white',
+	      shape: 'arc',
+	      radiusY: 3,
+	      radiusX: 20,
+	      strokeDasharray: '100%',
+	      strokeDashoffset: { '100%': '0%' },
+	      top: '26%',
+	      left: -40,
+	      angle: 205,
+	      delay: p.delay,
+	      duration: _constants2.default.LINE1_DURATION / 4,
+	      strokeWidth: { 10: 1 },
+	      isShowStart: true,
+	      easing: 'linear.none'
+	    };
+	    this.trail2Opts = {};
+
+	    this.trailReturn = {
+	      easing: 'linear.none',
+	      strokeDashoffset: '100%'
+	    };
+	  };
+
+	  Trail.prototype._render = function _render() {
+	    _Module.prototype._render.call(this);
+
+	    this.trailOpts.parent = this.el;
+
+	    var trail1 = new mojs.Shape(this.trailOpts).then((0, _extends3.default)({
+	      duration: _constants2.default.LINE1_DURATION / 5
+	    }, this.trailReturn));
+
+	    var trail2 = new mojs.Shape((0, _extends3.default)({}, this.trailOpts, {
+	      top: '47%',
+	      left: this.trailOpts.left + 5,
+	      angle: this.trailOpts.angle - 5,
+	      radiusX: 8,
+	      radiusY: 1.5
+	    })).then((0, _extends3.default)({
+	      duration: _constants2.default.LINE1_DURATION / 6
+	    }, this.trailReturn));
+
+	    this.timeline = new mojs.Timeline();
+	    this.timeline.add(trail1, trail2);
+	  };
+
+	  return Trail;
+	}(_module2.default);
+
+	exports.default = Trail;
+
+/***/ },
+/* 96 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12196,7 +12286,59 @@
 	};
 
 /***/ },
-/* 96 */
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _classCallCheck2 = __webpack_require__(40);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(41);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(77);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _trail = __webpack_require__(95);
+
+	var _trail2 = _interopRequireDefault(_trail);
+
+	var _constants = __webpack_require__(96);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var RightTrail = function (_Trail) {
+	  (0, _inherits3.default)(RightTrail, _Trail);
+
+	  function RightTrail() {
+	    (0, _classCallCheck3.default)(this, RightTrail);
+	    return (0, _possibleConstructorReturn3.default)(this, _Trail.apply(this, arguments));
+	  }
+
+	  RightTrail.prototype._vars = function _vars() {
+	    _Trail.prototype._vars.call(this);
+	    this.trailOpts.strokeDashoffset = { '-100%': '0%' };
+	    this.trailOpts.left = '140%';
+	    this.trailOpts.angle = 170;
+	    this.trailOpts.top = '31%';
+	    this.trailReturn.strokeDashoffset = '-100%';
+	  };
+
+	  return RightTrail;
+	}(_trail2.default);
+
+	exports.default = RightTrail;
+
+/***/ },
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12223,11 +12365,15 @@
 
 	var _ball2 = _interopRequireDefault(_ball);
 
+	var _collision = __webpack_require__(110);
+
+	var _collision2 = _interopRequireDefault(_collision);
+
 	var _colors = __webpack_require__(89);
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(96);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -12265,7 +12411,8 @@
 
 	    var EYE_DURATION = 100;
 	    var repeat = 2 * _constants2.default.LINE1_DURATION / EYE_DURATION - 1;
-	    this.timeline = new mojs.Timeline({ repeat: repeat });
+	    this.eyesTimeline = new mojs.Timeline({ repeat: repeat });
+	    this.timeline = new mojs.Timeline();
 
 	    var baseAngle = 160;
 	    var opts = {
@@ -12335,7 +12482,8 @@
 	      top: '48%'
 	    })).then(glareReturnOpts);
 
-	    this.timeline.add(eye1, eye2, mouth, glare1, glare2);
+	    this.eyesTimeline.add(eye1, eye2, mouth, glare1, glare2);
+	    this.timeline.add(this.eyesTimeline, new _collision2.default({ parent: this.el, delay: _constants2.default.LINE1_DURATION, direction: -1 }));
 	  };
 
 	  return Ball2;
@@ -12344,7 +12492,7 @@
 	exports.default = Ball2;
 
 /***/ },
-/* 97 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12375,7 +12523,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(96);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -12575,7 +12723,7 @@
 	exports.default = Ball3;
 
 /***/ },
-/* 98 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12598,19 +12746,23 @@
 
 	var _ball2 = _interopRequireDefault(_ball);
 
-	var _trail = __webpack_require__(108);
+	var _trail = __webpack_require__(95);
 
 	var _trail2 = _interopRequireDefault(_trail);
 
-	var _rightTrail = __webpack_require__(109);
+	var _rightTrail = __webpack_require__(97);
 
 	var _rightTrail2 = _interopRequireDefault(_rightTrail);
+
+	var _collision = __webpack_require__(110);
+
+	var _collision2 = _interopRequireDefault(_collision);
 
 	var _colors = __webpack_require__(89);
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(96);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -12678,7 +12830,7 @@
 	      }
 	    });
 
-	    return timeline.add(mouth, new _trail2.default({ parent: this.el, delay: 2.7 * _constants2.default.LINE1_DURATION }), new _rightTrail2.default({ parent: this.el, delay: 1.1 * _constants2.default.LINE1_DURATION }));
+	    return timeline.add(mouth, new _trail2.default({ parent: this.el, delay: 2.7 * _constants2.default.LINE1_DURATION }), new _rightTrail2.default({ parent: this.el, delay: 1.1 * _constants2.default.LINE1_DURATION }), new _collision2.default({ parent: this.el, delay: 3 * _constants2.default.LINE1_DURATION }));
 	  };
 
 	  return Ball4;
@@ -12687,13 +12839,13 @@
 	exports.default = Ball4;
 
 /***/ },
-/* 99 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(100);
+	var content = __webpack_require__(102);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(93)(content, {});
@@ -12713,7 +12865,7 @@
 	}
 
 /***/ },
-/* 100 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(92)();
@@ -12727,19 +12879,19 @@
 
 
 /***/ },
-/* 101 */
+/* 103 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 102 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(103);
+	var content = __webpack_require__(105);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(93)(content, {});
@@ -12759,7 +12911,7 @@
 	}
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(92)();
@@ -12773,7 +12925,7 @@
 
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -12781,13 +12933,13 @@
 	};
 
 /***/ },
-/* 105 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(106);
+	var content = __webpack_require__(108);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(93)(content, {});
@@ -12807,7 +12959,7 @@
 	}
 
 /***/ },
-/* 106 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(92)();
@@ -12821,7 +12973,7 @@
 
 
 /***/ },
-/* 107 */
+/* 109 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -12829,7 +12981,7 @@
 	};
 
 /***/ },
-/* 108 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12856,143 +13008,90 @@
 
 	var _module2 = _interopRequireDefault(_module);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(96);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Trail = function (_Module) {
-	  (0, _inherits3.default)(Trail, _Module);
+	var Collision = function (_Module) {
+	  (0, _inherits3.default)(Collision, _Module);
 
-	  function Trail() {
-	    (0, _classCallCheck3.default)(this, Trail);
+	  function Collision() {
+	    (0, _classCallCheck3.default)(this, Collision);
 	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
 	  }
 
-	  Trail.prototype._vars = function _vars() {
-	    var p = this._props;
-	    this.trailOpts = {
-	      fill: 'none',
-	      stroke: 'white',
-	      shape: 'arc',
-	      radiusY: 3,
-	      radiusX: 20,
-	      strokeDasharray: '100%',
-	      strokeDashoffset: { '100%': '0%' },
-	      top: '26%',
-	      left: -40,
-	      angle: 205,
-	      delay: p.delay,
-	      duration: _constants2.default.LINE1_DURATION / 4,
-	      strokeWidth: { 3: 1 },
-	      isShowStart: true,
-	      easing: 'linear.none'
-	    };
-	    this.trail2Opts = {};
-
-	    this.trailReturn = {
-	      easing: 'linear.none',
-	      strokeDashoffset: '100%'
-	    };
+	  Collision.prototype._declareDefaults = function _declareDefaults() {
+	    _Module.prototype._declareDefaults.call(this);
+	    this._defaults.direction = 1;
 	  };
 
-	  Trail.prototype._render = function _render() {
+	  Collision.prototype._render = function _render() {
 	    _Module.prototype._render.call(this);
 
-	    this.trailOpts.parent = this.el;
+	    var direction = this._props.direction;
 
-	    var trail1 = new mojs.Shape(this.trailOpts).then((0, _extends3.default)({
-	      duration: _constants2.default.LINE1_DURATION / 5
-	    }, this.trailReturn));
+	    var yShift = 70;
+	    var collisionOpts = {
+	      fill: 'white',
+	      y: { 0: -yShift },
+	      parent: this.el,
+	      delay: this._props.delay,
+	      radius: { 5: 0 },
+	      top: '50%',
+	      left: direction === 1 ? '100%' : '110%',
+	      duration: 300
+	    };
 
-	    var trail2 = new mojs.Shape((0, _extends3.default)({}, this.trailOpts, {
-	      top: '47%',
-	      left: this.trailOpts.left + 5,
-	      angle: this.trailOpts.angle - 5,
-	      radiusX: 8,
-	      radiusY: 1.5
-	    })).then((0, _extends3.default)({
-	      duration: _constants2.default.LINE1_DURATION / 6
-	    }, this.trailReturn));
+	    var collision1 = new mojs.Shape(collisionOpts);
 
+	    var collision2 = new mojs.Shape((0, _extends3.default)({}, collisionOpts, {
+	      y: { 0: yShift },
+	      direction: -1
+	    }));
+
+	    var collision3 = new mojs.Shape((0, _extends3.default)({}, collisionOpts, {
+	      direction: -1,
+	      y: { 0: yShift / 1.5 },
+	      x: { 0: 10 }
+	    }));
+
+	    var collision4 = new mojs.Shape({
+	      parent: this.el,
+	      shape: 'cross',
+	      fill: 'none',
+	      stroke: 'white',
+	      direction: 1,
+	      left: collisionOpts.left,
+	      radius: { 8: 0 },
+	      y: { 0: -yShift / 5 },
+	      delay: this._props.delay + collisionOpts.duration / 2,
+	      x: 'rand(-15, 15)'
+	    });
+
+	    var collision5 = new mojs.Shape({
+	      parent: this.el,
+	      shape: 'cross',
+	      fill: 'none',
+	      stroke: 'white',
+	      direction: 1,
+	      left: collisionOpts.left,
+	      top: '50%',
+	      radius: { 7: 0 },
+	      y: { 0: yShift / 2 },
+	      delay: this._props.delay + collisionOpts.duration / 2
+	    });
+
+	    // x:    'rand(-15, 15)',
 	    this.timeline = new mojs.Timeline();
-	    this.timeline.add(trail1, trail2);
+	    this.timeline.add(collision1, collision2, collision3, collision4, collision5);
 	  };
 
-	  return Trail;
+	  return Collision;
 	}(_module2.default);
 
-	exports.default = Trail;
-
-/***/ },
-/* 109 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	var _classCallCheck2 = __webpack_require__(40);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	var _possibleConstructorReturn2 = __webpack_require__(41);
-
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-	var _inherits2 = __webpack_require__(77);
-
-	var _inherits3 = _interopRequireDefault(_inherits2);
-
-	var _trail = __webpack_require__(108);
-
-	var _trail2 = _interopRequireDefault(_trail);
-
-	var _constants = __webpack_require__(95);
-
-	var _constants2 = _interopRequireDefault(_constants);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var RightTrail = function (_Trail) {
-	  (0, _inherits3.default)(RightTrail, _Trail);
-
-	  function RightTrail() {
-	    (0, _classCallCheck3.default)(this, RightTrail);
-	    return (0, _possibleConstructorReturn3.default)(this, _Trail.apply(this, arguments));
-	  }
-
-	  RightTrail.prototype._vars = function _vars() {
-	    _Trail.prototype._vars.call(this);
-	    this.trailOpts.strokeDashoffset = { '-100%': '0%' };
-	    this.trailOpts.left = '140%';
-	    this.trailOpts.angle = 170;
-	    this.trailOpts.top = '31%';
-	    this.trailReturn.strokeDashoffset = '-100%';
-	    // this.trailOpts = {
-	    //   fill:       'none',
-	    //   stroke:     'white',
-	    //   shape:      'arc',
-	    //   radiusY:    3,
-	    //   radiusX:    20,
-	    //   strokeDasharray:  '100%',
-	    //   strokeDashoffset: {'100%': '0%'},
-	    //   top:        '26%',
-	    //   left:       -40,
-	    //   angle:      205,
-	    //   delay:      p.delay,
-	    //   duration:   C.LINE1_DURATION/4,
-	    //   strokeWidth: { 3: 1 },
-	    //   isShowStart: true,
-	    //   easing:     'linear.none'
-	    // }
-	  };
-
-	  return RightTrail;
-	}(_trail2.default);
-
-	exports.default = RightTrail;
+	exports.default = Collision;
 
 /***/ }
 /******/ ]);
