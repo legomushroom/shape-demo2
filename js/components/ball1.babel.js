@@ -1,6 +1,8 @@
-import Ball   from './ball';
-import COLORS from './colors';
-import C      from './constants';
+import Ball        from './ball';
+import Trail       from './trail';
+import RightTrail  from './right-trail';
+import COLORS      from './colors';
+import C            from './constants';
 
 require('../../css/blocks/ball.postcss.css');
 // let CLASSES = require('../../css/blocks/ball.postcss.css.json');
@@ -269,7 +271,9 @@ class Ball2 extends Ball {
     return [
       disappointMouth,
       angerMouth, angerMouthBackground, mouthNoize,
-      speechMouth1, speechMouth2
+      speechMouth1, speechMouth2,
+      new Trail({ parent: this.el, delay: 2.95*C.LINE1_DURATION }),
+      new RightTrail({ parent: this.el, delay: .5*C.LINE1_DURATION })
     ]
   }
 }

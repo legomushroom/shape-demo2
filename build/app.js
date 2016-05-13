@@ -11920,6 +11920,14 @@
 
 	var _ball2 = _interopRequireDefault(_ball);
 
+	var _trail = __webpack_require__(108);
+
+	var _trail2 = _interopRequireDefault(_trail);
+
+	var _rightTrail = __webpack_require__(109);
+
+	var _rightTrail2 = _interopRequireDefault(_rightTrail);
+
 	var _colors = __webpack_require__(89);
 
 	var _colors2 = _interopRequireDefault(_colors);
@@ -12168,7 +12176,7 @@
 	      duration: _constants2.default.LINE1_DURATION
 	    });
 
-	    return [disappointMouth, angerMouth, angerMouthBackground, mouthNoize, speechMouth1, speechMouth2];
+	    return [disappointMouth, angerMouth, angerMouthBackground, mouthNoize, speechMouth1, speechMouth2, new _trail2.default({ parent: this.el, delay: 2.95 * _constants2.default.LINE1_DURATION }), new _rightTrail2.default({ parent: this.el, delay: .5 * _constants2.default.LINE1_DURATION })];
 	  };
 
 	  return Ball2;
@@ -12574,10 +12582,6 @@
 
 	exports.__esModule = true;
 
-	var _extends2 = __webpack_require__(2);
-
-	var _extends3 = _interopRequireDefault(_extends2);
-
 	var _classCallCheck2 = __webpack_require__(40);
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -12593,6 +12597,14 @@
 	var _ball = __webpack_require__(88);
 
 	var _ball2 = _interopRequireDefault(_ball);
+
+	var _trail = __webpack_require__(108);
+
+	var _trail2 = _interopRequireDefault(_trail);
+
+	var _rightTrail = __webpack_require__(109);
+
+	var _rightTrail2 = _interopRequireDefault(_rightTrail);
 
 	var _colors = __webpack_require__(89);
 
@@ -12666,59 +12678,7 @@
 	      }
 	    });
 
-	    var trailOpts = {
-	      parent: this.el,
-	      fill: 'none',
-	      stroke: 'white',
-	      shape: 'arc',
-	      radiusY: 3,
-	      radiusX: 20,
-	      strokeDasharray: '100%',
-	      strokeDashoffset: { '100%': '0%' },
-	      top: '26%',
-	      left: -40,
-	      angle: 205,
-	      delay: 2.7 * _constants2.default.LINE1_DURATION,
-	      duration: _constants2.default.LINE1_DURATION / 4,
-	      strokeWidth: { 3: 1 },
-	      isShowStart: true,
-	      easing: 'linear.none'
-	    };
-
-	    var trail1 = new mojs.Shape(trailOpts).then({
-	      duration: _constants2.default.LINE1_DURATION / 5,
-	      easing: 'linear.none',
-	      strokeDashoffset: '100%'
-	    });
-
-	    var trail2 = new mojs.Shape((0, _extends3.default)({}, trailOpts, {
-	      // duration: C.LINE1_DURATION/5,
-	      top: '47%',
-	      left: trailOpts.left + 5,
-	      angle: trailOpts.angle - 5,
-	      radiusX: 8,
-	      radiusY: 1.5
-	    })).then({
-	      duration: _constants2.default.LINE1_DURATION / 6,
-	      easing: 'linear.none',
-	      strokeDashoffset: '100%'
-	    });
-
-	    var trail3 = new mojs.Shape((0, _extends3.default)({}, trailOpts, {
-	      // duration: C.LINE1_DURATION/5,
-	      top: '60%',
-	      left: trailOpts.left + 13,
-	      angle: trailOpts.angle - 10,
-	      radiusX: 5,
-	      radiusY: .25
-	    })).then({
-	      duration: _constants2.default.LINE1_DURATION / 5,
-	      easing: 'linear.none',
-	      strokeDashoffset: '100%'
-	    });
-
-	    return timeline.add(mouth, trail1, trail2 //, trail3
-	    );
+	    return timeline.add(mouth, new _trail2.default({ parent: this.el, delay: 2.7 * _constants2.default.LINE1_DURATION }), new _rightTrail2.default({ parent: this.el, delay: 1.1 * _constants2.default.LINE1_DURATION }));
 	  };
 
 	  return Ball4;
@@ -12867,6 +12827,172 @@
 	module.exports = {
 		"scene": "_scene_y2oup_5"
 	};
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _extends2 = __webpack_require__(2);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _classCallCheck2 = __webpack_require__(40);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(41);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(77);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(87);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _constants = __webpack_require__(95);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Trail = function (_Module) {
+	  (0, _inherits3.default)(Trail, _Module);
+
+	  function Trail() {
+	    (0, _classCallCheck3.default)(this, Trail);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  Trail.prototype._vars = function _vars() {
+	    var p = this._props;
+	    this.trailOpts = {
+	      fill: 'none',
+	      stroke: 'white',
+	      shape: 'arc',
+	      radiusY: 3,
+	      radiusX: 20,
+	      strokeDasharray: '100%',
+	      strokeDashoffset: { '100%': '0%' },
+	      top: '26%',
+	      left: -40,
+	      angle: 205,
+	      delay: p.delay,
+	      duration: _constants2.default.LINE1_DURATION / 4,
+	      strokeWidth: { 3: 1 },
+	      isShowStart: true,
+	      easing: 'linear.none'
+	    };
+	    this.trail2Opts = {};
+
+	    this.trailReturn = {
+	      easing: 'linear.none',
+	      strokeDashoffset: '100%'
+	    };
+	  };
+
+	  Trail.prototype._render = function _render() {
+	    _Module.prototype._render.call(this);
+
+	    this.trailOpts.parent = this.el;
+
+	    var trail1 = new mojs.Shape(this.trailOpts).then((0, _extends3.default)({
+	      duration: _constants2.default.LINE1_DURATION / 5
+	    }, this.trailReturn));
+
+	    var trail2 = new mojs.Shape((0, _extends3.default)({}, this.trailOpts, {
+	      top: '47%',
+	      left: this.trailOpts.left + 5,
+	      angle: this.trailOpts.angle - 5,
+	      radiusX: 8,
+	      radiusY: 1.5
+	    })).then((0, _extends3.default)({
+	      duration: _constants2.default.LINE1_DURATION / 6
+	    }, this.trailReturn));
+
+	    this.timeline = new mojs.Timeline();
+	    this.timeline.add(trail1, trail2);
+	  };
+
+	  return Trail;
+	}(_module2.default);
+
+	exports.default = Trail;
+
+/***/ },
+/* 109 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _classCallCheck2 = __webpack_require__(40);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(41);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(77);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _trail = __webpack_require__(108);
+
+	var _trail2 = _interopRequireDefault(_trail);
+
+	var _constants = __webpack_require__(95);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var RightTrail = function (_Trail) {
+	  (0, _inherits3.default)(RightTrail, _Trail);
+
+	  function RightTrail() {
+	    (0, _classCallCheck3.default)(this, RightTrail);
+	    return (0, _possibleConstructorReturn3.default)(this, _Trail.apply(this, arguments));
+	  }
+
+	  RightTrail.prototype._vars = function _vars() {
+	    _Trail.prototype._vars.call(this);
+	    this.trailOpts.strokeDashoffset = { '-100%': '0%' };
+	    this.trailOpts.left = '140%';
+	    this.trailOpts.angle = 170;
+	    this.trailOpts.top = '31%';
+	    this.trailReturn.strokeDashoffset = '-100%';
+	    // this.trailOpts = {
+	    //   fill:       'none',
+	    //   stroke:     'white',
+	    //   shape:      'arc',
+	    //   radiusY:    3,
+	    //   radiusX:    20,
+	    //   strokeDasharray:  '100%',
+	    //   strokeDashoffset: {'100%': '0%'},
+	    //   top:        '26%',
+	    //   left:       -40,
+	    //   angle:      205,
+	    //   delay:      p.delay,
+	    //   duration:   C.LINE1_DURATION/4,
+	    //   strokeWidth: { 3: 1 },
+	    //   isShowStart: true,
+	    //   easing:     'linear.none'
+	    // }
+	  };
+
+	  return RightTrail;
+	}(_trail2.default);
+
+	exports.default = RightTrail;
 
 /***/ }
 /******/ ]);

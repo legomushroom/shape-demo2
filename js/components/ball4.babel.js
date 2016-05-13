@@ -1,6 +1,8 @@
-import Ball   from './ball';
-import COLORS from './colors';
-import C      from './constants';
+import Ball        from './ball';
+import Trail       from './trail';
+import RightTrail  from './right-trail';
+import COLORS      from './colors';
+import C            from './constants';
 
 require('../../css/blocks/ball.postcss.css');
 // let CLASSES = require('../../css/blocks/ball.postcss.css.json');
@@ -58,66 +60,10 @@ class Ball4 extends Ball {
       }
     });
 
-    const trailOpts = {
-      parent:     this.el,
-      fill:       'none',
-      stroke:     'white',
-      shape:      'arc',
-      radiusY:    3,
-      radiusX:    20,
-      strokeDasharray:  '100%',
-      strokeDashoffset: {'100%': '0%'},
-      top:        '26%',
-      left:       -40,
-      angle:      205,
-      delay:      2.7*C.LINE1_DURATION,
-      duration:   C.LINE1_DURATION/4,
-      strokeWidth: { 3: 1 },
-      isShowStart: true,
-      easing:     'linear.none'
-    }
-
-
-    const trail1 = new mojs.Shape(trailOpts)
-      .then({
-        duration: C.LINE1_DURATION/5,
-        easing:     'linear.none',
-        strokeDashoffset: '100%',
-      });
-
-    const trail2 = new mojs.Shape({
-      ...trailOpts,
-      // duration: C.LINE1_DURATION/5,
-      top: '47%',
-      left: trailOpts.left + 5,
-      angle: trailOpts.angle - 5,
-      radiusX: 8,
-      radiusY: 1.5,
-    })
-      .then({
-        duration: C.LINE1_DURATION/6,
-        easing:     'linear.none',
-        strokeDashoffset: '100%',
-      });
-
-    const trail3 = new mojs.Shape({
-      ...trailOpts,
-      // duration: C.LINE1_DURATION/5,
-      top: '60%',
-      left: trailOpts.left + 13,
-      angle: trailOpts.angle - 10,
-      radiusX: 5,
-      radiusY: .25,
-    })
-      .then({
-        duration: C.LINE1_DURATION/5,
-        easing:     'linear.none',
-        strokeDashoffset: '100%',
-      });
-
     return timeline.add(
       mouth,
-      trail1, trail2//, trail3
+      (new Trail({ parent: this.el, delay: 2.7*C.LINE1_DURATION })),
+      (new RightTrail({ parent: this.el, delay: 1.1*C.LINE1_DURATION }))
     );
   }
 }
