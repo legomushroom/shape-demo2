@@ -2,6 +2,7 @@ import Polyfill       from 'classlist-polyfill';
 import MojsPlayer     from 'mojs-player'
 import Module         from './components/module';
 import Ball           from './components/ball';
+import Ball1          from './components/ball1';
 import Ball2          from './components/ball2';
 import Ball3          from './components/ball3';
 import Ball4          from './components/ball4';
@@ -91,7 +92,7 @@ class Demo extends Module {
 
     // line.el.classList.add( LINE_CLASSES.line );
 
-    const circle1 = this._addCircle( line );
+    const ball1 = new Ball1({ parent: line.el });
 
     const bounceReturn = {
       angle:      90,
@@ -222,24 +223,14 @@ class Demo extends Module {
         easing: 'cubic.in'
       });
 
-
     mainTimeline.add(
       line, line2, line3, line4,
-      ball2, ball3, ball4,
-      shadow1, shadow2, shadow3, shadow4
+      ball1, ball2, ball3, ball4,
+      shadow1, shadow2, shadow3, shadow4,
     );
 
     ;( new MojsPlayer({ add: mainTimeline }) )
       .el.style[ 'z-index' ] = 10;
-  }
-
-  /*
-    Method to add a circle inside a module's el.
-    @private
-    @param {Object} Shape module instance.
-  */
-  _addCircle ( module ) {
-    return new Ball( { parent:  module.el } );
   }
 }
 

@@ -32,6 +32,7 @@ class Ball4 extends Ball {
       top:              75,
       duration:         C.LINE1_DURATION/2,
       delay:            C.LINE1_DURATION,
+      // x:                { 0: -10 },
       // strokeDasharray:  '35% 100%',
       strokeDasharray:  { [ dashStart ]: '10% 100%' },
       strokeDashoffset: '-60%',
@@ -39,25 +40,89 @@ class Ball4 extends Ball {
       strokeLinecap:    'round',
       onUpdate: (pe, p) => {
         this.face.style[ 'transform' ] = `
-          translateX(${ -10*p }px)
-          scaleY( ${ 1 - ( scaleSize*p ) }  )
+          translateX(${ -10*pe }px)
+          scaleY( ${ 1 - ( scaleSize*pe ) }  )
           `
       }
     }).then({
       angle:            startAngle,
       delay:            C.LINE1_DURATION,
-      // scale:            1
       strokeDasharray: dashStart,
+      // x: 0,
       onUpdate: (pe, p) => {
         let proc = easing(p);
         this.face.style[ 'transform' ] = `
-          translateX(${ -10*(1-proc) }px)
+          translateX(${ -10*(1-p) }px)
           scaleY( ${ (1-scaleSize) + ( scaleSize*proc ) }  )
           `
       }
     });
 
-    return timeline.add( mouth );
+    const trailOpts = {
+      parent:     this.el,
+      fill:       'none',
+      stroke:     'white',
+      shape:      'arc',
+      radiusY:    3,
+      radiusX:    20,
+      strokeDasharray:  '100%',
+      strokeDashoffset: {'100%': '0%'},
+      top:        '26%',
+      left:       -40,
+      angle:      205,
+      delay:      2.7*C.LINE1_DURATION,
+      duration:   C.LINE1_DURATION/4,
+      strokeWidth: { 3: 1 },
+      // opacity:    .75,
+      // opacity:    1,
+      // strokeWidth: 1,
+      isShowStart: true,
+      // x:          { [50] : 0 },
+      easing:     'linear.none'
+    }
+
+
+    const trail1 = new mojs.Shape(trailOpts)
+      .then({
+        duration: C.LINE1_DURATION/5,
+        easing:     'linear.none',
+        strokeDashoffset: '100%',
+      });
+
+    const trail2 = new mojs.Shape({
+      ...trailOpts,
+      // duration: C.LINE1_DURATION/5,
+      top: '47%',
+      left: trailOpts.left + 5,
+      angle: trailOpts.angle - 5,
+      radiusX: 8,
+      radiusY: 1.5,
+    })
+      .then({
+        duration: C.LINE1_DURATION/6,
+        easing:     'linear.none',
+        strokeDashoffset: '100%',
+      });
+
+    const trail3 = new mojs.Shape({
+      ...trailOpts,
+      // duration: C.LINE1_DURATION/5,
+      top: '60%',
+      left: trailOpts.left + 13,
+      angle: trailOpts.angle - 10,
+      radiusX: 5,
+      radiusY: .25,
+    })
+      .then({
+        duration: C.LINE1_DURATION/5,
+        easing:     'linear.none',
+        strokeDashoffset: '100%',
+      });
+
+    return timeline.add(
+      mouth,
+      trail1, trail2//, trail3
+    );
   }
 }
 

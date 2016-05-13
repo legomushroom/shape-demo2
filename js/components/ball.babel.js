@@ -12,9 +12,9 @@ class Ball extends Module {
   _render () {
     super._render();
     this.el.classList.add( 'ball' );
-    this.face = this._createChild( 'div', 'ball__inner' );
-    
-    // return [  ];
+    this.face  = this._createChild( 'div', 'ball__inner' );
+    this.face2 = this._createChild( 'div', 'ball__inner2' );
+    this.face3 = this._createChild( 'div', 'ball__inner3' );
   }
 }
 

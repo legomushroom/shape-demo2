@@ -13,14 +13,16 @@ class Ball3 extends Ball {
   _render () {
     super._render();
     this.el.classList.add( 'ball--3' );
-    this._addEyes();
+
+    this.timeline = new mojs.Timeline;
+
+    this.timeline.add( this._addEyes(), this._addEyeBrows() );
   }
   /*
     Method to describe eyes motion.
     @private
   */
   _addEyes () {
-    this.timeline = new mojs.Timeline;
 
     const EYE_DURATION = 50;
     const opts = {
@@ -50,7 +52,46 @@ class Ball3 extends Ball {
       left:     '69.5%'
     }).then(returnOpts);
 
-    this.timeline.add( eye1, eye2 );
+    return [ eye1, eye2 ];
+  }
+  /*
+    Method to describe eyebrows motion.
+    @private
+  */
+  _addEyeBrows () {
+
+
+
+    const dScale = .1;
+    const dY     = 4;
+    const opts  = {
+      duration:   100,
+      easing:     'cubic.out'
+    }
+    const tw1 = new mojs.Tween({
+      delay: C.LINE1_DURATION,
+      ...opts,
+      onUpdate: (ep, p) => {
+        this.face2.style[ 'transform' ] = `
+          scaleX(${ 1 - (dScale*ep) })
+          translateY(${ dY*ep }px)
+          `;
+      }
+    });
+
+    const tw2 = new mojs.Tween({
+      delay: 3*C.LINE1_DURATION,
+      ...opts,
+      onUpdate: (ep, p) => {
+        this.face2.style[ 'transform' ] = `
+          scaleX(${ (1-dScale) + (dScale*ep) })
+          translateY(${ dY*(1-ep) }px)
+          `;
+      }
+    });
+
+
+    return [ tw1, tw2 ];
   }
 }
 
