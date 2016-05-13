@@ -97,11 +97,11 @@
 
 	var _ball6 = _interopRequireDefault(_ball5);
 
-	var _ball7 = __webpack_require__(99);
+	var _ball7 = __webpack_require__(100);
 
 	var _ball8 = _interopRequireDefault(_ball7);
 
-	var _ball9 = __webpack_require__(100);
+	var _ball9 = __webpack_require__(101);
 
 	var _ball10 = _interopRequireDefault(_ball9);
 
@@ -115,14 +115,14 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(101);
-	var CLASSES = __webpack_require__(103);
+	__webpack_require__(102);
+	var CLASSES = __webpack_require__(104);
 
-	__webpack_require__(104);
-	var LINE_CLASSES = __webpack_require__(106);
+	__webpack_require__(105);
+	var LINE_CLASSES = __webpack_require__(107);
 
-	__webpack_require__(107);
-	var SCENE_CLASSES = __webpack_require__(109);
+	__webpack_require__(108);
+	var SCENE_CLASSES = __webpack_require__(110);
 
 	var LINE2_SHIFT = 4;
 	var LINE3_SHIFT = 6;
@@ -164,7 +164,7 @@
 	  */
 
 	  Demo.prototype._render = function _render() {
-	    var _x;
+	    var _x, _ref, _ref2;
 
 	    _Module.prototype._render.call(this);
 
@@ -292,9 +292,42 @@
 	      easing: 'cubic.in'
 	    });
 
+	    var dustContainer = document.querySelector('#js-scene-dust');
+	    var SwirlStagger = mojs.stagger(mojs.ShapeSwirl);
+	    var dust = new SwirlStagger((_ref = {
+	      parent: dustContainer,
+	      quantifier: 7,
+	      isShowStart: true,
+	      radius: 20,
+	      top: '100%',
+	      left: '50%',
+	      fill: 'white'
+	    }, _ref['radius'] = { 'rand(3, 15)': 0 }, _ref.delay = 'stagger(' + _constants2.default.LINE1_DURATION / 2 + ', 45)', _ref.x = { 0: 70 }, _ref.y = { 0: -20 }, _ref.direction = 1, _ref.swirlFrequency = 1, _ref.swirlSize = 50, _ref));
+
+	    var dust2 = new SwirlStagger((_ref2 = {
+	      parent: dustContainer,
+	      quantifier: 2,
+	      isShowStart: true,
+	      radius: 20,
+	      top: '100%',
+	      left: '50%',
+	      fill: 'white'
+	    }, _ref2['radius'] = { 'rand(3, 15)': 0 }, _ref2.delay = 'stagger(' + _constants2.default.LINE1_DURATION + ', 45)', _ref2.x = { 0: 70 }, _ref2.y = { 0: -20 }, _ref2.direction = [1, -1], _ref2.pathScale = [1, .75], _ref2));
+
+	    // swirlFrequency: 1,
+	    // swirlSize: 50
+	    var dustTween = new mojs.Tween({
+	      onUpdate: function onUpdate(p) {
+	        dustContainer.style['transform'] = 'translateX(' + -120 * p + 'px)';
+	      },
+
+	      delay: _constants2.default.LINE1_DURATION / 2,
+	      duration: _constants2.default.LINE1_DURATION / 2
+	    });
+
 	    var mainTimeline = new mojs.Timeline();
 
-	    mainTimeline.add(line, line2, line3, line4, ball1, ball2, ball3, ball4, shadow1, shadow2, shadow3, shadow4)
+	    mainTimeline.add(line, line2, line3, line4, ball1, ball2, ball3, ball4, shadow1, shadow2, shadow3, shadow4, dust, dust2, dustTween)
 	    // .play();
 
 	    ;new _mojsPlayer2.default({ add: mainTimeline }).el.style['z-index'] = 10;
@@ -12234,7 +12267,7 @@
 	      angle: 205,
 	      delay: p.delay,
 	      duration: _constants2.default.LINE1_DURATION / 4,
-	      strokeWidth: { 10: 1 },
+	      strokeWidth: { 10: 3 },
 	      isShowStart: true,
 	      easing: 'linear.none'
 	    };
@@ -12365,7 +12398,7 @@
 
 	var _ball2 = _interopRequireDefault(_ball);
 
-	var _collision = __webpack_require__(110);
+	var _collision = __webpack_require__(99);
 
 	var _collision2 = _interopRequireDefault(_collision);
 
@@ -12493,6 +12526,121 @@
 
 /***/ },
 /* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _extends2 = __webpack_require__(2);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _classCallCheck2 = __webpack_require__(40);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(41);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(77);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(87);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _constants = __webpack_require__(96);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Collision = function (_Module) {
+	  (0, _inherits3.default)(Collision, _Module);
+
+	  function Collision() {
+	    (0, _classCallCheck3.default)(this, Collision);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  Collision.prototype._declareDefaults = function _declareDefaults() {
+	    _Module.prototype._declareDefaults.call(this);
+	    this._defaults.direction = 1;
+	  };
+
+	  Collision.prototype._render = function _render() {
+	    _Module.prototype._render.call(this);
+
+	    var direction = this._props.direction;
+
+	    var yShift = 70;
+	    var collisionOpts = {
+	      fill: 'white',
+	      y: { 0: -yShift },
+	      parent: this.el,
+	      delay: this._props.delay,
+	      radius: { 5: 0 },
+	      top: '50%',
+	      left: direction === 1 ? '100%' : '110%',
+	      duration: 300
+	    };
+
+	    var collision1 = new mojs.Shape(collisionOpts);
+
+	    var collision2 = new mojs.Shape((0, _extends3.default)({}, collisionOpts, {
+	      y: { 0: yShift },
+	      direction: -1
+	    }));
+
+	    var collision3 = new mojs.Shape((0, _extends3.default)({}, collisionOpts, {
+	      direction: -1,
+	      y: { 0: yShift / 1.5 },
+	      x: { 0: 10 }
+	    }));
+
+	    var collision4 = new mojs.Shape({
+	      parent: this.el,
+	      shape: 'cross',
+	      fill: 'none',
+	      stroke: 'white',
+	      strokeWidth: { 3: 2 },
+	      direction: 1,
+	      left: collisionOpts.left,
+	      radius: { 9: 0 },
+	      y: { 0: -yShift / 5 },
+	      delay: this._props.delay + collisionOpts.duration / 2,
+	      x: 'rand(-15, 15)'
+	    });
+
+	    var collision5 = new mojs.Shape({
+	      parent: this.el,
+	      shape: 'cross',
+	      fill: 'none',
+	      stroke: 'white',
+	      strokeWidth: { 3: 2 },
+	      direction: 1,
+	      left: collisionOpts.left,
+	      top: '50%',
+	      radius: { 8: 0 },
+	      y: { 0: yShift / 2 },
+	      delay: this._props.delay + collisionOpts.duration / 2
+	    });
+
+	    // x:    'rand(-15, 15)',
+	    this.timeline = new mojs.Timeline();
+	    this.timeline.add(collision1, collision2, collision3, collision4, collision5);
+	  };
+
+	  return Collision;
+	}(_module2.default);
+
+	exports.default = Collision;
+
+/***/ },
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12723,7 +12871,7 @@
 	exports.default = Ball3;
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12754,7 +12902,7 @@
 
 	var _rightTrail2 = _interopRequireDefault(_rightTrail);
 
-	var _collision = __webpack_require__(110);
+	var _collision = __webpack_require__(99);
 
 	var _collision2 = _interopRequireDefault(_collision);
 
@@ -12839,13 +12987,13 @@
 	exports.default = Ball4;
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(102);
+	var content = __webpack_require__(103);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(93)(content, {});
@@ -12865,7 +13013,7 @@
 	}
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(92)();
@@ -12879,19 +13027,19 @@
 
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(105);
+	var content = __webpack_require__(106);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(93)(content, {});
@@ -12911,7 +13059,7 @@
 	}
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(92)();
@@ -12925,7 +13073,7 @@
 
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -12933,13 +13081,13 @@
 	};
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(108);
+	var content = __webpack_require__(109);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(93)(content, {});
@@ -12959,7 +13107,7 @@
 	}
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(92)();
@@ -12967,131 +13115,18 @@
 
 
 	// module
-	exports.push([module.id, ".scene {\n  /*outline:      1px solid white;*/\n  width:        400px;\n  width:        25rem;\n  height:        370px;\n  height:       23.125rem;\n  position:     absolute;\n  left:         50%;\n  top:          50%;\n  margin-left:        -200px;\n  margin-left:  -12.5rem;\n  margin-top:        -185px;\n  margin-top:   -11.5625rem\n}\n.scene__bar {\n  background:        #29363B;\n  height:        4px;\n  height:        0.25rem;\n  border-radius:        0.9375rem\n}\n.scene__bar-handle {\n  position:        absolute;\n  width:        10px;\n  width:        0.625rem;\n  height:        16px;\n  height:        1rem;\n  border-radius:        0.625rem;\n  background:        #29363B;\n  top:        -5px;\n  top:        -0.3125rem;\n  z-index:        1\n}\n.scene__bar-handle:nth-of-type(1) {\n  margin-left:        47px;\n  margin-left:        2.9375rem\n}\n.scene__bar-handle:nth-of-type(2) {\n  margin-left:        143px;\n  margin-left:        8.9375rem\n}\n.scene__bar-handle:nth-of-type(3) {\n  margin-left:        239px;\n  margin-left:        14.9375rem\n}\n.scene__bar-handle:nth-of-type(4) {\n  margin-left:        335px;\n  margin-left:        20.9375rem\n}", ""]);
+	exports.push([module.id, ".scene {\n  /*outline:      1px solid white;*/\n  width:        400px;\n  width:        25rem;\n  height:        370px;\n  height:       23.125rem;\n  position:     absolute;\n  left:         50%;\n  top:          50%;\n  margin-left:        -200px;\n  margin-left:  -12.5rem;\n  margin-top:        -185px;\n  margin-top:   -11.5625rem\n}\n.scene__bar {\n  background:        #29363B;\n  height:        4px;\n  height:        0.25rem;\n  border-radius:        0.9375rem\n}\n.scene__dust {\n  width:        240px;\n  width:        15rem;\n  height:        200px;\n  height:        12.5rem;\n  /*border: 1px solid white;*/\n  position:        absolute;\n  bottom:        37.5px;\n  bottom:        2.34375rem;\n  right:        -180px;\n  right:        -11.25rem;\n  overflow:        hidden\n}\n.scene__bar-handle {\n  position:        absolute;\n  width:        10px;\n  width:        0.625rem;\n  height:        16px;\n  height:        1rem;\n  border-radius:        0.625rem;\n  background:        #29363B;\n  top:        -5px;\n  top:        -0.3125rem;\n  z-index:        1\n}\n.scene__bar-handle:nth-of-type(1) {\n  margin-left:        47px;\n  margin-left:        2.9375rem\n}\n.scene__bar-handle:nth-of-type(2) {\n  margin-left:        143px;\n  margin-left:        8.9375rem\n}\n.scene__bar-handle:nth-of-type(3) {\n  margin-left:        239px;\n  margin-left:        14.9375rem\n}\n.scene__bar-handle:nth-of-type(4) {\n  margin-left:        335px;\n  margin-left:        20.9375rem\n}", ""]);
 
 	// exports
 
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports) {
 
 	module.exports = {
 		"scene": "_scene_y2oup_5"
 	};
-
-/***/ },
-/* 110 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	var _extends2 = __webpack_require__(2);
-
-	var _extends3 = _interopRequireDefault(_extends2);
-
-	var _classCallCheck2 = __webpack_require__(40);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	var _possibleConstructorReturn2 = __webpack_require__(41);
-
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-	var _inherits2 = __webpack_require__(77);
-
-	var _inherits3 = _interopRequireDefault(_inherits2);
-
-	var _module = __webpack_require__(87);
-
-	var _module2 = _interopRequireDefault(_module);
-
-	var _constants = __webpack_require__(96);
-
-	var _constants2 = _interopRequireDefault(_constants);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Collision = function (_Module) {
-	  (0, _inherits3.default)(Collision, _Module);
-
-	  function Collision() {
-	    (0, _classCallCheck3.default)(this, Collision);
-	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
-	  }
-
-	  Collision.prototype._declareDefaults = function _declareDefaults() {
-	    _Module.prototype._declareDefaults.call(this);
-	    this._defaults.direction = 1;
-	  };
-
-	  Collision.prototype._render = function _render() {
-	    _Module.prototype._render.call(this);
-
-	    var direction = this._props.direction;
-
-	    var yShift = 70;
-	    var collisionOpts = {
-	      fill: 'white',
-	      y: { 0: -yShift },
-	      parent: this.el,
-	      delay: this._props.delay,
-	      radius: { 5: 0 },
-	      top: '50%',
-	      left: direction === 1 ? '100%' : '110%',
-	      duration: 300
-	    };
-
-	    var collision1 = new mojs.Shape(collisionOpts);
-
-	    var collision2 = new mojs.Shape((0, _extends3.default)({}, collisionOpts, {
-	      y: { 0: yShift },
-	      direction: -1
-	    }));
-
-	    var collision3 = new mojs.Shape((0, _extends3.default)({}, collisionOpts, {
-	      direction: -1,
-	      y: { 0: yShift / 1.5 },
-	      x: { 0: 10 }
-	    }));
-
-	    var collision4 = new mojs.Shape({
-	      parent: this.el,
-	      shape: 'cross',
-	      fill: 'none',
-	      stroke: 'white',
-	      direction: 1,
-	      left: collisionOpts.left,
-	      radius: { 8: 0 },
-	      y: { 0: -yShift / 5 },
-	      delay: this._props.delay + collisionOpts.duration / 2,
-	      x: 'rand(-15, 15)'
-	    });
-
-	    var collision5 = new mojs.Shape({
-	      parent: this.el,
-	      shape: 'cross',
-	      fill: 'none',
-	      stroke: 'white',
-	      direction: 1,
-	      left: collisionOpts.left,
-	      top: '50%',
-	      radius: { 7: 0 },
-	      y: { 0: yShift / 2 },
-	      delay: this._props.delay + collisionOpts.duration / 2
-	    });
-
-	    // x:    'rand(-15, 15)',
-	    this.timeline = new mojs.Timeline();
-	    this.timeline.add(collision1, collision2, collision3, collision4, collision5);
-	  };
-
-	  return Collision;
-	}(_module2.default);
-
-	exports.default = Collision;
 
 /***/ }
 /******/ ]);

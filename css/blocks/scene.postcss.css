@@ -16,6 +16,15 @@ $height: 370;
     height:         calc( 4 * $PX );
     border-radius:  calc( 15 * $PX );
   }
+  &__dust {
+    width:  calc( 240*$PX );
+    height: calc( 200*$PX );
+    /*border: 1px solid white;*/
+    position: absolute;
+    bottom: calc( 3.75*$GS );
+    right: calc( -180*$PX );
+    overflow: hidden;
+  }
   $width:  16;
   $height: 10;
   $start:  47;

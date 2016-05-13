@@ -203,12 +203,59 @@ class Demo extends Module {
         easing: 'cubic.in'
       });
 
+
+    const dustContainer = document.querySelector('#js-scene-dust');
+    const SwirlStagger = mojs.stagger( mojs.ShapeSwirl );
+    const dust = new SwirlStagger({
+      parent:  dustContainer,
+      quantifier:  7,
+      isShowStart: true,
+      radius: 20,
+      top: '100%',
+      left: '50%',
+      fill: 'white',
+      radius: {'rand(3, 15)': 0},
+      delay: `stagger(${ C.LINE1_DURATION/2 }, 45)`,
+      x: { 0: 70 },
+      y: { 0: -20 },
+      direction: 1,
+      swirlFrequency: 1,
+      swirlSize: 50
+    });
+
+    const dust2 = new SwirlStagger({
+      parent:  dustContainer,
+      quantifier:  2,
+      isShowStart: true,
+      radius: 20,
+      top: '100%',
+      left: '50%',
+      fill: 'white',
+      radius: {'rand(3, 15)': 0},
+      delay: `stagger(${ C.LINE1_DURATION }, 45)`,
+      x: { 0: 70 },
+      y: { 0: -20 },
+      direction: [1, -1],
+      pathScale: [ 1, .75 ]
+      // swirlFrequency: 1,
+      // swirlSize: 50
+    });
+
+    const dustTween = new mojs.Tween({
+      onUpdate (p) {
+        dustContainer.style[ 'transform' ] = `translateX(${-120*p}px)`;
+      },
+      delay: C.LINE1_DURATION/2,
+      duration: C.LINE1_DURATION/2
+    })
+
     const mainTimeline = new mojs.Timeline();
 
     mainTimeline.add(
       line, line2, line3, line4,
       ball1, ball2, ball3, ball4,
       shadow1, shadow2, shadow3, shadow4,
+      dust, dust2, dustTween
     )
       // .play();
 
