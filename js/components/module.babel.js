@@ -165,7 +165,14 @@ class Module {
   */
   _createChild ( tagName, className ) {
     let child = this._createElement( 'div' );
-    className && child.classList.add( className );
+
+    if ( className ) {
+      let classes = className.split( ' ' );
+      for (var i = 0; i < classes.length; i++) {
+        child.classList.add( classes[i] )
+      }
+    }
+    
     this.el.appendChild( child );
     return child;
   }
