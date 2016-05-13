@@ -45,17 +45,6 @@ const opts = {
   y:           -2*LINE_HEIGHT
 };
 
-// const circleOpts = {
-//   fill:         'none',
-//   stroke:       'white',
-//   radius:       CIRCLE_RADIUS,
-//   shape:        'circle',
-//   isShowStart:  1,
-//   top:          '50%',
-//   left:         '100%',
-//   x:            CIRCLE_RADIUS,
-// }
-
 class Demo extends Module {
   /*
     Method for initial module's render.
@@ -90,9 +79,10 @@ class Demo extends Module {
         easing: 'cubic.out'
       });
 
-    // line.el.classList.add( LINE_CLASSES.line );
-
     const ball1 = new Ball1({ parent: line.el });
+
+    // line.el.parentNode.style[ 'backface-visibility' ] = 'hidden';
+    // line.el.parentNode.style[ '-webkit-backface-visibility' ] = 'hidden';
 
     const bounceReturn = {
       angle:      90,

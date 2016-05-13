@@ -73,11 +73,7 @@ class Ball4 extends Ball {
       delay:      2.7*C.LINE1_DURATION,
       duration:   C.LINE1_DURATION/4,
       strokeWidth: { 3: 1 },
-      // opacity:    .75,
-      // opacity:    1,
-      // strokeWidth: 1,
       isShowStart: true,
-      // x:          { [50] : 0 },
       easing:     'linear.none'
     }
 

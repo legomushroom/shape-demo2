@@ -145,7 +145,7 @@ class Ball2 extends Ball {
       radiusY:      1.5,
       scaleX:       { 1: 2.5 },
       scaleY:       { 1: 3.5 },
-      isShowStart:  true,
+      // isShowStart:  true,
       parent:       this.el,
       left:         '53%',
       top:          '77%',

@@ -35,7 +35,7 @@ class Ball2 extends Ball {
       duration:         EYE_DURATION,
       easing:           'expo.out',
       isShowStart:      true,
-      top:              '50%',
+      top:              '49%',
       strokeDasharray:  {'50%': '70%'},
       angle:            { [baseAngle]: 145 },
     }
