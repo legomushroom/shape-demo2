@@ -239,6 +239,7 @@ class Ball2 extends Ball {
       easing:     'expo.out',
       radiusX:    18,
       rx:         12,
+      ry:         12,
       duration:   2*C.LINE1_DURATION,
       delay:      C.LINE1_DURATION,
       isShowEnd:  false,

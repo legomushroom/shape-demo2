@@ -18,10 +18,9 @@ class Dust extends Module {
     const scene = document.querySelector('#js-scene');
     scene.appendChild( this.el );
 
-    const SwirlStagger = mojs.stagger( mojs.ShapeSwirl );
-    const dust = new SwirlStagger({
+
+    const dustOpts = {
       parent:  this.el,
-      quantifier:  7,
       isShowStart: true,
       radius: 20,
       top: '100%',
@@ -31,32 +30,41 @@ class Dust extends Module {
       scale: { 1: 0 },
       isForce3d: true,
       isTimelineLess: true,
-      delay: `stagger(${ p.delay }, 45)`,
       x: { 0: 70*p.direction },
       y: { 0: -20 },
       direction: this._props.direction,
       swirlFrequency: 1,
       swirlSize: 50,
-    });
+    }
 
-    const dustTrail = new SwirlStagger({
-      parent:  this.el,
-      quantifier:  2,
-      isShowStart: true,
-      radius: 20,
-      top: '100%',
-      left: '50%',
-      fill: 'white',
-      radius: 'rand(3, 15)',
-      scale: { 1: 0 },
-      delay: `stagger(${ p.delay + 200 }, 45)`,
-      x: { 0: 70*p.direction },
-      y: { 0: -20 },
-      direction: [this._props.direction, -1*this._props.direction],
-      pathScale: [ 1, .75 ],
-      isTimelineLess: true,
-      isForce3d: true,
-    });
+    const dust = new mojs.Timeline;
+
+    for (var i = 0; i < 7; i++) {
+      dust.add( new mojs.ShapeSwirl({
+          ...dustOpts,
+          delay:  p.delay + i*45
+        })
+      )
+    }
+
+    const dustTrail = new mojs.Timeline;
+
+    for (var i = 0; i < 2; i++) {
+
+      let dirCoef   = ( i % 2 === 0 ) ? 1 : -1;
+      let direction = dirCoef * this._props.direction;
+      let pathScale = ( i % 2 === 0 ) ? 1 : .75;
+
+      dustTrail.add( new mojs.ShapeSwirl({
+          ...dustOpts,
+          delay:  p.delay + 200 + i*45,
+          direction,
+          pathScale,
+          swirlSize: 10,
+          swirlFrequency: 3,
+        })
+      )
+    }
 
     const dustTween = new mojs.Tween({
       onUpdate: (p) =>  {
