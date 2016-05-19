@@ -17,12 +17,17 @@ class Ball4 extends Ball {
     super._render();
     this.el.classList.add( 'ball--4' );
 
-    const timeline = new mojs.Timeline;
-    const startAngle = 0;
-    const endAngle = 25;
-    const dashStart = '30% 100%';
-    const easing = mojs.easing.path('M0,100 L15,100 C47.3046875,-362.261716 100,5.68434189e-14 100,5.68434189e-14');
-    const scaleSize = .35;
+    const timeline = new mojs.Timeline,
+      startAngle = 0,
+      endAngle = 25,
+      dashStart = '30% 100%',
+      easing = mojs.easing.path('M0,100 L15,100 C47.3046875,-362.261716 100,5.68434189e-14 100,5.68434189e-14'),
+      scaleSize = .35;
+
+
+    this.face.style[ 'backface-visibility' ] = 'hidden';
+    this.face.style[ `${mojs.h.prefix.css}backface-visibility` ] = 'hidden';
+    
     const mouth = new mojs.Shape({
       fill:             'none',
       stroke:           COLORS.BLACK,
@@ -35,8 +40,6 @@ class Ball4 extends Ball {
       top:              75,
       duration:         C.LINE1_DURATION/2,
       delay:            C.LINE1_DURATION,
-      // x:                { 0: -10 },
-      // strokeDasharray:  '35% 100%',
       strokeDasharray:  { [ dashStart ]: '10% 100%' },
       strokeDashoffset: '-60%',
       angle:            { [startAngle] : endAngle },

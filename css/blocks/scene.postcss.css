@@ -24,6 +24,7 @@ $height: 370;
     bottom: calc( 3.75*$GS );
     right: calc( -180*$PX );
     overflow: hidden;
+    z-index: 1;
   }
   $width:  16;
   $height: 10;

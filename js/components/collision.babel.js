@@ -19,10 +19,13 @@ class Collision extends Module {
       y:    { 0: -yShift },
       parent: this.el,
       delay: this._props.delay,
-      radius: {5: 0},
+      radius: 5,
+      scale:  { 1: 0 },
       top: '50%',
       left: ( direction === 1 ) ? '100%' : '110%',
-      duration:  300
+      duration:  300,
+      isTimelineLess: true,
+      isForce3d: true
     }
 
     const collision1 = new mojs.Shape(collisionOpts);
@@ -40,39 +43,43 @@ class Collision extends Module {
       x:    { 0: 10 },
     });
 
-    const collision4 = new mojs.Shape({
+    const starOpts = {
       parent: this.el,
       shape: 'cross',
       fill: 'none',
       stroke: 'white',
-      strokeWidth: {3: 2},
+      strokeWidth: 3,
       direction: 1,
       left: collisionOpts.left,
       radius: {9: 0},
       y:    { 0: -yShift/5 },
       delay: this._props.delay + collisionOpts.duration/2,
       x:    'rand(-15, 15)',
-    });
+    }
+
+    const collision4 = new mojs.Shape( starOpts );
 
     const collision5 = new mojs.Shape({
-      parent: this.el,
-      shape: 'cross',
-      fill: 'none',
-      stroke: 'white',
-      strokeWidth: {3: 2},
-      direction: 1,
-      left: collisionOpts.left,
+      ...starOpts,
       top:    '50%',
       radius: {8: 0},
       y:      { 0: yShift/2 },
-      delay: this._props.delay + collisionOpts.duration/2,
-      // x:    'rand(-15, 15)',
+      x:      0
+    });
+
+    const collision6 = new mojs.Shape({
+      ...starOpts,
+      top:    '50%',
+      radius: {9: 0},
+      y:      { 0: yShift },
+      x:      { 0: 10 },
+      delay:  starOpts.delay - 25
     });
 
     this.timeline = new mojs.Timeline();
     this.timeline.add(
       collision1, collision2, collision3,
-      collision4, collision5
+      collision4, collision5, collision6
     );
   }
 }

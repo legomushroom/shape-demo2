@@ -32,21 +32,22 @@ class Ball2 extends Ball {
     const opts = {
       parent:       this.eye1,
       fill:         COLORS.BLACK,
-      radius:       3,
-      scale:        { 1: 2.1 },
+      radius:       6.5,
+      scale:        { .5: 1 },
       isShowStart:  true,
       top:          '50%',
       left:         '50%',
-      x:            { [eyeX] : 0 },
-      y:            1,
+      x:            { [eyeX] : .5 },
+      y:            .5,
       easing:       'expo.in',
-      duration:     C.LINE1_DURATION
+      duration:     C.LINE1_DURATION,
+      isForce3d:    true
     }
 
     const eyeReturn = {
       delay: 2*C.LINE1_DURATION,
       x: eyeX,
-      scale: 1
+      scale: .5
     }
 
     const eye1 = new mojs.Shape({
@@ -67,13 +68,14 @@ class Ball2 extends Ball {
       parent:       this.eye1,
       shape:        'rect',
       fill:         COLORS.BLACK,
-      top:          '130%',
+      top:          '135%',
       left:         '50%',
       radius:       10,
       // delay:        C.LINE1_DURATION,
       y:            { 0: lidUp.y },
       duration:     40,
-      timeline:     {  repeat: 5 }
+      timeline:     {  repeat: 5 },
+      isForce3d:    true
     }
 
     const lidReturn = { y: lidUp.y - 5 }
@@ -97,31 +99,31 @@ class Ball2 extends Ball {
       parent:         this.face,
       shape:          'line',
       stroke:         COLORS.BLACK,
-      radius:         6,
+      radius:         8,
       angle:          {0: angle},
-      left:           '28%',
-      top:            '25%',
+      left:           '32%',
+      top:            '30%',
       y:              { [yShift] : 0},
       x:              { [xShift] : 0},
       strokeWidth:    3,
       strokeLinecap:  'round',
       isShowStart:    true,
       duration:       50,
-      delay:          C.LINE1_DURATION
+      delay:          C.LINE1_DURATION,
+      isForce3d:      true
     }
 
     const brow1 = new mojs.Shape({
       ...browOpts,
       angle:          {0: -angle},
-      left:           '74%',
+      left:           '72%',
       x:              { [-xShift] : 0},
-    })
-      .then({
-        angle:        0,
-        y:            yShift,
-        x:            -xShift,
-        delay:        2*C.LINE1_DURATION
-      });
+    }).then({
+      angle:        0,
+      y:            yShift,
+      x:            -xShift,
+      delay:        2*C.LINE1_DURATION
+    });
 
     const brow2 = new mojs.Shape(browOpts)
       .then({
@@ -153,7 +155,8 @@ class Ball2 extends Ball {
       top:          '77%',
       duration:     mouthDuration,
       delay:        3*C.LINE1_DURATION,
-      x:            { 0: -10 }
+      x:            { 0: -10 },
+      isForce3d:    true
     }
 
     const speechReturn = {
@@ -181,29 +184,35 @@ class Ball2 extends Ball {
         isShowEnd:    false
       });
 
-    const speechMouth2 = new mojs.Shape({
-      ...speechOpts,
-      x:            { 0: -12 }
-    })
-    .then({
-      ...speechReturn,
-      x:           -10
-    })
-    .then({
-      scaleY:       6,
-      scaleX:       3,
-      x:           -8
-    })
-    .then(speechReturn)
-    .then({
-      scaleY:       4,
-      scaleX:       6,
-    }).then({
-      ...speechReturn,
-      isShowEnd:    false
-    });
+    // const speechMouth2 = new mojs.Shape({
+    //   ...speechOpts,
+    //   x:            { 0: -12 }
+    // })
+    // .then({
+    //   ...speechReturn,
+    //   x:           -10
+    // })
+    // .then({
+    //   scaleY:       6,
+    //   scaleX:       3,
+    //   x:           -8
+    // })
+    // .then(speechReturn)
+    // .then({
+    //   scaleY:       4,
+    //   scaleX:       6,
+    // }).then({
+    //   ...speechReturn,
+    //   isShowEnd:    false
+    // });
 
     const noise = mojs.easing.path('M0,100 L24.2114672,99.7029845 L27.0786839,106.645089 L29.2555809,93.3549108 L32.0340385,103.816964 L35.3459816,94.6015626 L38.3783493,103.092634 L41.0513382,95.9547991 L43.7739944,106.645089 L45.6729927,96.8973214 L50,105.083147 L53.3504448,93.3549108 L57.7360497,103.816964 L60.8616066,95.9547991 L65.0345993,103.092634 L68.6997757,97.5106029 L71.6646194,102.03125 L75.5066986,96.5672433 L78.2949219,102.652344 L81.0313873,96.8973214 L84.0174408,102.328264 L86.0842667,97.7332592 L88.7289352,101.606306 L91.1429977,98.3533763 L94.3822556,101.287388 L97.0809174,98.7254467 L100,100');
+
+    this.face.style[ 'backface-visibility' ] = 'hidden';
+    this.face.style[ `${mojs.h.prefix.css}backface-visibility` ] = 'hidden';
+
+    this.face2.style[ 'backface-visibility' ] = 'hidden';
+    this.face2.style[ `${mojs.h.prefix.css}backface-visibility` ] = 'hidden';
 
     const mouthNoize = new mojs.Tween({
       duration: 3*C.LINE1_DURATION,
@@ -226,29 +235,34 @@ class Ball2 extends Ball {
       top:        '74%',
       left:       '50%',
       parent:     this.face2,
-      radiusY:    { 4: 9.5 },
+      radiusY:    9.5,
       easing:     'expo.out',
       radiusX:    18,
       rx:         12,
       duration:   2*C.LINE1_DURATION,
       delay:      C.LINE1_DURATION,
-      isShowEnd: false,
+      isShowEnd:  false,
+      isTimelineLess: true,
+      isForce3d:  true
     });
     
     const angerMouth = new mojs.Shape({
       fill:         'none',
       shape:        'zigzag',
-      angle:       -45,
       top:          '76%',
       left:         '50%',
       stroke:       COLORS.BLACK,
-      strokeWidth:  3,
+      strokeWidth:  2,
       parent:       this.face2,
-      radius:       8,
-      points:       4,
+      radius:       5,
+      radiusX:      14,
+      y:            1,
+      points:       9,
       duration:     2*C.LINE1_DURATION,
       delay:        C.LINE1_DURATION,
-      isShowEnd:    false
+      isShowEnd:    false,
+      isTimelineLess: true,
+      isForce3d: true
     });
 
     const disappointMouth = new mojs.Shape({
@@ -256,24 +270,25 @@ class Ball2 extends Ball {
       strokeWidth:  3,
       strokeLinecap: 'round',
       fill:         'none',
-      radius:       8,
+      radius:       6,
       radiusX:      10,
       isShowStart:  true,
       isShowEnd:    false,
       parent:       this.el,
       left:         '50%',
-      top:          '82%',
+      top:          '76%',
       strokeDasharray: '35% 100%',
       strokeDashoffset: '77%',
       duration:     C.LINE1_DURATION,
+      isTimelineLess: true,
+      isForce3d: true
     });
 
     return [
-      disappointMouth,
+      disappointMouth, speechMouth1,
       angerMouth, angerMouthBackground, mouthNoize,
-      speechMouth1, speechMouth2,
-      new Trail({ parent: this.el, delay: 2.95*C.LINE1_DURATION }),
-      new RightTrail({ parent: this.el, delay: .5*C.LINE1_DURATION })
+      new Trail({ parent: this.el, delay: 3.15*C.LINE1_DURATION }),
+      new RightTrail({ parent: this.el, delay: .65*C.LINE1_DURATION })
     ]
   }
 }

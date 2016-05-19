@@ -2,27 +2,26 @@ import Module from './module';
 import C      from './constants';
 
 class Trail extends Module {
-
-  _vars () {
+  _declareOpts () {
     const p = this._props;
     this.trailOpts = {
       fill:       'none',
       stroke:     'white',
-      shape:      'arc',
+      shape:      'curve',
       radiusY:    3,
-      radiusX:    20,
+      radiusX:    25,
       strokeDasharray:  '100%',
       strokeDashoffset: {'100%': '0%'},
       top:        '26%',
-      left:       -40,
+      left:       -42,
       angle:      205,
       delay:      p.delay,
       duration:   C.LINE1_DURATION/4,
-      strokeWidth: { 10: 3 },
+      strokeWidth: { 20: 7 },
       isShowStart: true,
-      easing:     'linear.none'
+      easing:     'linear.none',
+      opacity:    .75
     }
-    this.trail2Opts = {}
 
     this.trailReturn = {
       easing: 'linear.none',
@@ -30,10 +29,27 @@ class Trail extends Module {
     }
   }
 
+  _declareOpts2 () {
+    const p = this._props;
+
+    this.trail2Opts = {
+      ...this.trailOpts,
+      top: '42%',
+      left: this.trailOpts.left + 5,
+      angle: this.trailOpts.angle - 3,
+      radiusX: 8,
+      radiusY: 1.5,
+    }
+  }
+
   _render () {
     super._render();
 
+    this._declareOpts()
+    this._declareOpts2()
+
     this.trailOpts.parent = this.el;
+    this.trail2Opts.parent = this.el;
 
     const trail1 = new mojs.Shape(this.trailOpts)
       .then({
@@ -41,14 +57,7 @@ class Trail extends Module {
         ...this.trailReturn
       });
 
-    const trail2 = new mojs.Shape({
-      ...this.trailOpts,
-      top: '47%',
-      left: this.trailOpts.left + 5,
-      angle: this.trailOpts.angle - 5,
-      radiusX: 8,
-      radiusY: 1.5,
-    })
+    const trail2 = new mojs.Shape(this.trail2Opts)
     .then({
       duration: C.LINE1_DURATION/6,
       ...this.trailReturn

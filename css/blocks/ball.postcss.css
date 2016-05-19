@@ -65,6 +65,9 @@ $borderSize: 4;
       left: 66%;
     }
   }
+  &--1 &__eye {
+    top:            37%;
+  }
 
   &__inner,
   &__inner2,

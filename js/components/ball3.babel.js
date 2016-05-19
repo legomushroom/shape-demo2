@@ -39,6 +39,7 @@ class Ball3 extends Ball {
       scaleX:       { 1: .85 },
       duration:     C.LINE1_DURATION/4,
       delay:        C.LINE1_DURATION,
+      isForce3d:    true
     }).then({
       angle:        0,
       x:            0,
@@ -47,7 +48,9 @@ class Ball3 extends Ball {
     });
 
     this.timeline.add(
-      this._addEyes(), this._addEyeBrows(), this._addEyeLids(),
+      this._addEyes(),
+      this._addEyeBrows(),
+      this._addEyeLids(),
       mouth
     );
   }
@@ -72,6 +75,7 @@ class Ball3 extends Ball {
       isShowStart:  true,
       top:          '53%',
       left:         '50%',
+      isForce3d:    true
     }
 
     const returnOpts = {
@@ -101,7 +105,7 @@ class Ball3 extends Ball {
     const duration = 50;
 
     const browOpts = {
-      shape:        'arc',
+      shape:        'curve',
       stroke:       COLORS.BLACK,
       strokeWidth:  3,
       strokeLinecap: 'round',
@@ -118,6 +122,7 @@ class Ball3 extends Ball {
       y:            { 0:  xShift/2 },
       duration:     duration,
       delay:        C.LINE1_DURATION,
+      isForce3d:    true
     }
     const brow1 = new mojs.Shape(browOpts)
       .then({
@@ -160,26 +165,28 @@ class Ball3 extends Ball {
       isShowEnd:    true,
       parent:       this.eye1,
       left:         '50%',
-      top:          '-17%',
-      y:            { [yShift]: 0 },
+      top:          '-32%',
+      y:            { [yShift]: 1 },
       duration:     duration,
       delay:        C.LINE1_DURATION,
+      // isForce3d:    true
     }
     const lid1 = new mojs.Shape(lidOpts)
-      .then({
-        y:            yShift,
-        delay:        2*C.LINE1_DURATION - duration,
-      });
+      // .then({
+      //   y:            yShift,
+      //   delay:        2*C.LINE1_DURATION - duration,
+      // });
 
     const lid2 = new mojs.Shape({
       ...lidOpts,
       parent:       this.eye2,
-    }).then({
-      y:            yShift,
-      delay:        2*C.LINE1_DURATION - duration,
-    });
+    })
+    // .then({
+    //   y:            yShift,
+    //   delay:        2*C.LINE1_DURATION - duration,
+    // });
 
-    return [ lid1, lid2 ];
+    return [ ];
   }
 }
 

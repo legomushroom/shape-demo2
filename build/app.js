@@ -113,6 +113,10 @@
 
 	var _constants2 = _interopRequireDefault(_constants);
 
+	var _dust = __webpack_require__(111);
+
+	var _dust2 = _interopRequireDefault(_dust);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	__webpack_require__(102);
@@ -124,12 +128,12 @@
 	__webpack_require__(108);
 	var SCENE_CLASSES = __webpack_require__(110);
 
-	var LINE2_SHIFT = 4;
-	var LINE3_SHIFT = 6;
+	var LINE2_SHIFT = 8;
+	var LINE3_SHIFT = 12;
 	var LINE1_SHIFT = 45;
 
-	var LINE2_BOUNCE_DURATION = _constants2.default.LINE1_DURATION / 2;
-	var LINE3_BOUNCE_DURATION = _constants2.default.LINE1_DURATION;
+	var LINE2_BOUNCE_DURATION = 2 * _constants2.default.LINE1_DURATION;
+	var LINE3_BOUNCE_DURATION = 2 * _constants2.default.LINE1_DURATION;
 
 	var COLLIDE_DURATION = .25 * _constants2.default.LINE1_DURATION;
 	var BOUNCE_DURATION = _constants2.default.LINE1_DURATION - COLLIDE_DURATION;
@@ -147,7 +151,8 @@
 	  angle: (_angle = {}, _angle[90 - LINE1_SHIFT] = 90, _angle),
 	  easing: 'cubic.in',
 	  isShowStart: true,
-	  y: -2 * LINE_HEIGHT
+	  y: -2 * LINE_HEIGHT,
+	  isForce3d: true
 	};
 
 	var Demo = function (_Module) {
@@ -164,12 +169,25 @@
 	  */
 
 	  Demo.prototype._render = function _render() {
-	    var _x, _ref, _ref2;
+	    var _this2 = this,
+	        _x;
 
-	    _Module.prototype._render.call(this);
+	    // super._render();
 
-	    this.el.classList.add('scene');
+	    // this.el.classList.add( 'scene' );
+	    this.el = document.querySelector('#js-scene');
 	    opts.parent = this.el;
+
+	    var noise = mojs.easing.path('M0,100 C0,100 2.08241272,101.287388 3.78271484,102.328264 C5.35552883,99.9999999 7.00048828,95.208496 7.00048828,95.208496 L10.1762695,103.816964 L12.7734375,95.9547991 L19.3125,102.328264 L22.2539062,95.208496 L27.0786839,106.645089 L29.2555809,93.3549108 L32.0340385,103.816964 L35.3459816,94.6015626 L38.3783493,103.092634 L41.0513382,95.9547991 L43.7739944,106.645089 L45.6729927,96.8973214 L50,105.083147 L53.3504448,93.3549108 L57.7360497,103.816964 L60.8616066,95.9547991 L65.0345993,103.092634 L68.6997757,97.5106029 L71.6646194,102.03125 L75.5066986,96.5672433 L78.2949219,102.652344 L81.0313873,96.8973214 L84.0174408,102.328264 L86.0842667,97.7332592 L88.7289352,101.606306 L91.1429977,98.3533763 L94.3822556,101.287388 L97.0809174,98.7254467 L100,100');
+	    var collisionNoize = new mojs.Tween({
+	      duration: _constants2.default.LINE1_DURATION,
+	      delay: _constants2.default.LINE1_DURATION,
+	      repeat: 1,
+	      onUpdate: function onUpdate(ep, p) {
+	        var proc = noise(p);
+	        _this2.el.style['transform'] = '\n          translateX(' + 50 * proc + 'px)\n          translateY(' + -50 * proc + 'px)\n        ';
+	      }
+	    });
 
 	    var BASE_SHIFT = 2.6 * LINE_HEIGHT;
 
@@ -244,7 +262,8 @@
 	      easing: 'cubic.out',
 	      x: { 0: -4 * LINE3_SHIFT },
 	      delay: _constants2.default.LINE1_DURATION,
-	      duration: COLLIDE_DURATION
+	      duration: COLLIDE_DURATION,
+	      isForce3d: true
 	    };
 
 	    var shadowBounce = (0, _extends3.default)({}, bounceReturn, {
@@ -292,45 +311,12 @@
 	      easing: 'cubic.in'
 	    });
 
-	    var dustContainer = document.querySelector('#js-scene-dust');
-	    var SwirlStagger = mojs.stagger(mojs.ShapeSwirl);
-	    var dust = new SwirlStagger((_ref = {
-	      parent: dustContainer,
-	      quantifier: 7,
-	      isShowStart: true,
-	      radius: 20,
-	      top: '100%',
-	      left: '50%',
-	      fill: 'white'
-	    }, _ref['radius'] = { 'rand(3, 15)': 0 }, _ref.delay = 'stagger(' + _constants2.default.LINE1_DURATION / 2 + ', 45)', _ref.x = { 0: 70 }, _ref.y = { 0: -20 }, _ref.direction = 1, _ref.swirlFrequency = 1, _ref.swirlSize = 50, _ref));
-
-	    var dust2 = new SwirlStagger((_ref2 = {
-	      parent: dustContainer,
-	      quantifier: 2,
-	      isShowStart: true,
-	      radius: 20,
-	      top: '100%',
-	      left: '50%',
-	      fill: 'white'
-	    }, _ref2['radius'] = { 'rand(3, 15)': 0 }, _ref2.delay = 'stagger(' + _constants2.default.LINE1_DURATION + ', 45)', _ref2.x = { 0: 70 }, _ref2.y = { 0: -20 }, _ref2.direction = [1, -1], _ref2.pathScale = [1, .75], _ref2));
-
-	    // swirlFrequency: 1,
-	    // swirlSize: 50
-	    var dustTween = new mojs.Tween({
-	      onUpdate: function onUpdate(p) {
-	        dustContainer.style['transform'] = 'translateX(' + -120 * p + 'px)';
-	      },
-
-	      delay: _constants2.default.LINE1_DURATION / 2,
-	      duration: _constants2.default.LINE1_DURATION / 2
-	    });
-
 	    var mainTimeline = new mojs.Timeline();
 
-	    mainTimeline.add(line, line2, line3, line4, ball1, ball2, ball3, ball4, shadow1, shadow2, shadow3, shadow4, dust, dust2, dustTween)
-	    // .play();
-
-	    ;new _mojsPlayer2.default({ add: mainTimeline }).el.style['z-index'] = 10;
+	    mainTimeline.add(line, line2, line3, line4, ball1, ball2, ball3, ball4, shadow1, shadow2, shadow3, shadow4, new _dust2.default({ delay: .5 * _constants2.default.LINE1_DURATION, right: '-120px' }), new _dust2.default({ delay: 1.1 * _constants2.default.LINE1_DURATION, right: '70%' }), collisionNoize
+	    // new Dust({ delay: 2.5*C.LINE1_DURATION, right: '102%', direction: -1 }),
+	    // new Dust({ delay: 3.1*C.LINE1_DURATION, right: '-50px', direction: -1 }),
+	    );new _mojsPlayer2.default({ add: mainTimeline }).el.style['z-index'] = 10;
 	  };
 
 	  return Demo;
@@ -11605,7 +11591,7 @@
 
 
 	// module
-	exports.push([module.id, ".ball {\n  width:            96px;\n  width:            6rem;\n  height:            96px;\n  height:           6rem;\n  border:            4px solid #FFCEA5;\n  border:           0.25rem solid #FFCEA5;\n  border-radius:    50%;\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iOTZweCIgaGVpZ2h0PSI5NnB4IiB2aWV3Qm94PSIwIDAgOTYgOTYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz4gICAgICAgIDxyYWRpYWxHcmFkaWVudCBjeD0iNTAlIiBjeT0iMCUiIGZ4PSI1MCUiIGZ5PSIwJSIgcj0iMTAwJSIgaWQ9InJhZGlhbEdyYWRpZW50LTEiPiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiNGRkYxRTEiIG9mZnNldD0iMCUiPjwvc3RvcD4gICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjRkZCMTcwIiBvZmZzZXQ9IjEwMCUiPjwvc3RvcD4gICAgICAgIDwvcmFkaWFsR3JhZGllbnQ+ICAgIDwvZGVmcz4gICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTEiIGZpbGw9InVybCgjcmFkaWFsR3JhZGllbnQtMSkiIHg9IjAiIHk9IjAiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiI+PC9yZWN0PiAgICA8L2c+PC9zdmc+);\n  -webkit-transform:        rotate(-90deg);\n          transform:        rotate(-90deg);\n  position:         absolute;\n  left:             100%;\n  bottom:           50%;\n  margin-bottom:            -48px;\n  margin-bottom:    -3rem;\n  box-sizing:       border-box\n  /*&--3 &__inner {\n    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iODlweCIgaGVpZ2h0PSI4OXB4IiB2aWV3Qm94PSIwIDAgODkgODkiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGcgaWQ9Ikdyb3VwLTYiPiAgICAgICAgICAgIDxwYXRoIGQ9Ik00NC41LDg5IEM2OS4wNzY2NzE0LDg5IDg5LDY5LjA3NjY3MTQgODksNDQuNSBDODksMTkuOTIzMzI4NiA2OS4wNzY2NzE0LDAgNDQuNSwwIEMxOS45MjMzMjg2LDAgMCwxOS45MjMzMjg2IDAsNDQuNSBDMCw2OS4wNzY2NzE0IDE5LjkyMzMyODYsODkgNDQuNSw4OSBaIiBpZD0iT3ZhbC02MiI+PC9wYXRoPiAgICAgICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy4wMDAwMDAsIDM2LjAwMDAwMCkiPiAgICAgICAgICAgICAgICA8ZyBpZD0iR3JvdXAtNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTIuODEzNDAwLCAwLjQyODU3MSkiPiAgICAgICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMTQiIGZpbGw9IiNGRkZGRkYiIGN4PSI5LjIwMTI3OTEyIiBjeT0iOS4yMzIxNDI4NiIgcng9IjkuMjAxMjc5MTIiIHJ5PSI5LjIzMjE0Mjg2Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTguNDAyNTU4Miw5LjIzMjE0Mjg2IEMxOC40MDI1NTgyLDQuMTMzMzcxMTUgMTQuMjgzMDA1MywwIDkuMjAxMjc5MTIsMCBDNC4xMTk1NTI5OSwwIC01LjE1MTQzNDgzZS0xNCw0LjEzMzM3MTE1IC01LjE1MTQzNDgzZS0xNCw5LjIzMjE0Mjg2IEwxOC40MDI1NTgyLDkuMjMyMTQyODYgWiIgaWQ9Ik92YWwtMTQiIGZpbGw9IiMyOTM2M0IiPjwvcGF0aD4gICAgICAgICAgICAgICAgPC9nPiAgICAgICAgICAgICAgICA8ZyBpZD0iR3JvdXAtNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTMuNjc4NDkyLCAwLjQyODU3MSkiPiAgICAgICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMTQiIGZpbGw9IiNGRkZGRkYiIGN4PSI5LjIwMTI3OTEyIiBjeT0iOS4yMzIxNDI4NiIgcng9IjkuMjAxMjc5MTIiIHJ5PSI5LjIzMjE0Mjg2Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTguNDAyNTU4Miw5LjIzMjE0Mjg2IEMxOC40MDI1NTgyLDQuMTMzMzcxMTUgMTQuMjgzMDA1MywwIDkuMjAxMjc5MTIsMCBDNC4xMTk1NTI5OSwwIC01LjQ4ODk0MjYzZS0xMyw0LjEzMzM3MTE1IC01LjQ4ODk0MjYzZS0xMyw5LjIzMjE0Mjg2IEwxOC40MDI1NTgyLDkuMjMyMTQyODYgWiIgaWQ9Ik92YWwtMTQiIGZpbGw9IiMyOTM2M0IiPjwvcGF0aD4gICAgICAgICAgICAgICAgPC9nPiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMzUuMzAwNzQxNCwzMy43MDQxNjc3IEMzOC43OTk2OTM5LDI3LjY2NTUxMjQgNDMuNDE5MjUyOCwyOS45OTA3MDk3IDUxLjUzNzc2NDIsMjkuOTkwNzA5NiIgaWQ9IlBhdGgtMTAiIHN0cm9rZT0iIzI5MzYzQiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjwvcGF0aD4gICAgICAgICAgICAgICAgPGcgaWQ9ImdsYXJlIiBvcGFjaXR5PSIwLjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuOTA1NjEyLCAxNi43MTY4MzcpIiBmaWxsPSIjRkZGRkZGIj4gICAgICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTIwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2LjMyOTg2OSwgNi42ODU4NjgpIHJvdGF0ZSg0OC4wMDAwMDApIHRyYW5zbGF0ZSgtNi4zMjk4NjksIC02LjY4NTg2OCkgIiBjeD0iNi4zMjk4Njg2OSIgY3k9IjYuNjg1ODY4MzQiIHJ4PSIxLjk5OTA1NTEiIHJ5PSI2LjY4NTg2ODM0Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOS4wNTI5ODgsIDEwLjQzMTkwNSkgcm90YXRlKDQ4LjAwMDAwMCkgdHJhbnNsYXRlKC05LjA1Mjk4OCwgLTEwLjQzMTkwNSkgIiBjeD0iOS4wNTI5ODc5OCIgY3k9IjEwLjQzMTkwNTEiIHJ4PSIxLjk5OTA1NTEiIHJ5PSIzLjM0MjkzNDE3Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgIDwvZz4gICAgICAgICAgICA8L2c+ICAgICAgICA8L2c+ICAgIDwvZz48L3N2Zz4=);\n  }\n  &--3 &__inner2 {\n    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iODlweCIgaGVpZ2h0PSI4OXB4IiB2aWV3Qm94PSIwIDAgODkgODkiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGcgaWQ9Ikdyb3VwLTYiPiAgICAgICAgICAgIDxwYXRoIGQ9Ik00NC41LDg5IEM2OS4wNzY2NzE0LDg5IDg5LDY5LjA3NjY3MTQgODksNDQuNSBDODksMTkuOTIzMzI4NiA2OS4wNzY2NzE0LDAgNDQuNSwwIEMxOS45MjMzMjg2LDAgMCwxOS45MjMzMjg2IDAsNDQuNSBDMCw2OS4wNzY2NzE0IDE5LjkyMzMyODYsODkgNDQuNSw4OSBaIiBpZD0iT3ZhbC02MiI+PC9wYXRoPiAgICAgICAgICAgIDxnIGlkPSJHcm91cC0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxOS4wMDAwMDAsIDIzLjAwMDAwMCkiIHN0cm9rZT0iIzI5MzYzQiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMC45MTQxMTIxOCw3Ljc0MzcyMjEgQzAuOTE0MTEyMTgsNy43NDM3MjIxIDQuODcxODcxMTgsNy43NDM3MjIxIDguODI5NjMwMTgsMC41Mzg0ODcwMjYiIGlkPSJQYXRoLTExIj48L3BhdGg+ICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik00My4yNDY0NTQzLDcuNzU2NzU2MjYgQzQzLjI0NjQ1NDMsNy43NTY3NTYyNiA0OC4zNDE1MDIyLDcuNzU2NzU2MjYgNTEuMTYxOTcyMywwLjU1MTUyMTE5MSIgaWQ9IlBhdGgtMTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ3LjIwNDIxMywgNC4xNTQxMzkpIHJvdGF0ZSg5My4wMDAwMDApIHRyYW5zbGF0ZSgtNDcuMjA0MjEzLCAtNC4xNTQxMzkpICI+PC9wYXRoPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==);\n  }*/\n\n}\n.ball:before, .ball:after {\n  content:            '';\n  position:            absolute\n\n}\n.ball:before {\n  width:            11px;\n  width:            0.6875rem;\n  height:            11px;\n  height:            0.6875rem;\n  border-radius:            0.25rem;\n  background:            #29363B;\n  left:            50%;\n  top:            -3px;\n  top:            -0.1875rem;\n  margin-left:            -5.5px;\n  margin-left:            -0.34375rem;\n  margin-top:            -11px;\n  margin-top:            -0.6875rem\n\n}\n.ball:after {\n  width:            39px;\n  width:            2.4375rem;\n  height:            17px;\n  height:            1.0625rem;\n  opacity:            0.75;\n  -webkit-transform:            rotate(323deg);\n          transform:            rotate(323deg);\n  background:            #FFFFFF;\n  border-radius:            50%;\n  top:            6px;\n  top:            0.375rem;\n  left:            2px;\n  left:            0.125rem;\n  z-index:            -1\n\n}\n.ball__eye {\n  width:            20px;\n  width:            1.25rem;\n  height:            20px;\n  height:            1.25rem;\n  position:            absolute;\n  top:            34%;\n  background:            #FFF;\n  border-radius:            50%;\n  z-index:            -1;\n  overflow:            hidden\n\n}\n.ball__eye--1 {\n  left:            16%\n\n}\n.ball__eye--2 {\n  left:            66%\n\n}\n.ball__inner, .ball__inner2, .ball__inner3 {\n  position:            absolute;\n  left:            0;\n  top:            0;\n  width:            100%;\n  height:            100%;\n  border-radius:            50%\n  /*z-index:        1;*/\n\n}\n.ball--3 .ball__eye {\n  top:            41.5%\n\n}\n.ball--1 .ball__inner {\n  /*background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iOTBweCIgaGVpZ2h0PSI5MHB4IiB2aWV3Qm94PSIwIDAgOTAgOTAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGcgaWQ9Ikdyb3VwLTEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NS45MTYzNDksIDM1LjA3MzI3Mykgcm90YXRlKC0yLjAwMDAwMCkgdHJhbnNsYXRlKC00NS45MTYzNDksIC0zNS4wNzMyNzMpIHRyYW5zbGF0ZSgxMy45MTYzNDksIDE3LjU3MzI3MykiPiAgICAgICAgICAgIDxnIGlkPSJHcm91cC05IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NC45MjA2NzQsIDE1LjA2OTg1NikiIGZpbGw9IiNGRkZGRkYiPiAgICAgICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMSIgY3g9IjkuNDMzMzQxNTQiIGN5PSI5LjQzMzM0MTU0IiByeD0iOS40MzMzNDE1NCIgcnk9IjkuNDMzMzQxNTQiPjwvZWxsaXBzZT4gICAgICAgICAgICA8L2c+ICAgICAgICAgICAgPGcgaWQ9Ikdyb3VwLTkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuNzcwMTAwLCAxNC40ODAxOTIpIiBmaWxsPSIjRkZGRkZGIj4gICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMjEiIGN4PSI5LjQzMzM0MTU0IiBjeT0iOS40MzMzNDE1NCIgcng9IjkuNDMzMzQxNTQiIHJ5PSI5LjQzMzM0MTU0Ij48L2VsbGlwc2U+ICAgICAgICAgICAgPC9nPiAgICAgICAgICAgIDxwYXRoIGQ9Ik01LjkwMDMwNjE4LDguNDE3NzU1NDMgQzUuOTAwMzA2MTgsOC40MTc3NTU0MyAxMS41NzQ4MzE0LDkuNTc5NDI5OTYgMTcuMjQ5MzU2NSw0LjA0NTQ0NzI1IiBpZD0iUGF0aC0xMSIgc3Ryb2tlPSIjMjkzNjNCIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuNTc0ODMxLCA2LjI4MjM4Nikgcm90YXRlKDQ2LjAwMDAwMCkgdHJhbnNsYXRlKC0xMS41NzQ4MzEsIC02LjI4MjM4NikgIj48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTQ2LjA1ODc4MTEsOS42NzQ1OTkyOSBDNDYuMDU4NzgxMSw5LjY3NDU5OTI5IDUxLjczMzMwNjMsMTAuNzk5MTc3MiA1Ny40MDc4MzE1LDUuMzAyMjkxMTEiIGlkPSJQYXRoLTExIiBzdHJva2U9IiMyOTM2M0IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MS43MzMzMDYsIDcuNTM1ODUyKSBzY2FsZSgtMSwgMSkgcm90YXRlKDQzLjAwMDAwMCkgdHJhbnNsYXRlKC01MS43MzMzMDYsIC03LjUzNTg1MikgIj48L3BhdGg+ICAgICAgICA8L2c+ICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsLTYyIiBjeD0iNDQuODEyMzE4NyIgY3k9IjQ0LjYwMjI5MzciIHI9IjQ0LjUiPjwvY2lyY2xlPiAgICA8L2c+PC9zdmc+);*/\n\n}\n.ball--2 .ball__inner {\n  background-image:            url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iODlweCIgaGVpZ2h0PSI4OXB4IiB2aWV3Qm94PSIwIDAgODkgODkiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGNpcmNsZSBpZD0iT3ZhbC02MiIgY3g9IjQ0LjUiIGN5PSI0NC41IiByPSI0NC41Ij48L2NpcmNsZT4gICAgICAgIDxnIGlkPSJHcm91cC0xMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTYuMDAwMDAwLCAyNy4wMDAwMDApIj4gICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMSIgZmlsbD0iIzI5MzYzQiIgY3g9IjguODkzOTYzNjgiIGN5PSIxNy41NzE0Mjg2IiByeD0iOC44OTM5NjM2OCIgcnk9IjkiPjwvZWxsaXBzZT4gICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMSIgZmlsbD0iIzI5MzYzQiIgY3g9IjUxLjI0NjE3MTciIGN5PSIxNy41NzE0Mjg2IiByeD0iOC44OTM5NjM2OCIgcnk9IjkiPjwvZWxsaXBzZT4gICAgICAgICAgICA8cGF0aCBkPSJNNC44NjkyNjMxMyw0Ljk4NDIzNTQ5IEM0Ljg2OTI2MzEzLDQuOTg0MjM1NDkgOC43MDgyNTkxNyw3Ljc3MDM2ODMgMTUuNTY5Mzk5NiwwLjgxMjc3OTAxOCIgaWQ9IlBhdGgtMTEiIHN0cm9rZT0iIzI5MzYzQiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNNDQuODkzMzQwNSw0LjE3MTQ1NjQ3IEM0NC44OTMzNDA1LDQuMTcxNDU2NDcgNDkuMjMyNzg3NCw4LjMyNTc1MzM1IDU1LjU5MzQ3NjksMCIgaWQ9IlBhdGgtMTEiIHN0cm9rZT0iIzI5MzYzQiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUwLjI0MzQwOSwgMi42MDM5NDUpIHNjYWxlKC0xLCAxKSB0cmFuc2xhdGUoLTUwLjI0MzQwOSwgLTIuNjAzOTQ1KSAiPjwvcGF0aD4gICAgICAgICAgICA8ZyBpZD0iR3JvdXAtNyIgb3BhY2l0eT0iMC43IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1My42ODI4NzAsIDIyLjUwMDAwMCkiIGZpbGw9IiNGRkZGRkYiPiAgICAgICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNi43MTkzNDEsIDYuMTgxMzE5KSByb3RhdGUoNDguMDAwMDAwKSB0cmFuc2xhdGUoLTYuNzE5MzQxLCAtNi4xODEzMTkpICIgY3g9IjYuNzE5MzQwNjkiIGN5PSI2LjE4MTMxODY4IiByeD0iMS44MzI1NDc0NiIgcnk9IjYuMTgxMzE4NjgiPjwvZWxsaXBzZT4gICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMjAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwLjEzMjM1MCwgMTAuNTY5MTk1KSByb3RhdGUoNDguMDAwMDAwKSB0cmFuc2xhdGUoLTEwLjEzMjM1MCwgLTEwLjU2OTE5NSkgIiBjeD0iMTAuMTMyMzQ5NiIgY3k9IjEwLjU2OTE5NTMiIHJ4PSIxLjgzMjU0NzQ2IiByeT0iMy4wOTA2NTkzNCI+PC9lbGxpcHNlPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==)\n\n}\n.ball--4 .ball__inner {\n  background-image:            url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iODlweCIgaGVpZ2h0PSI4OXB4IiB2aWV3Qm94PSIwIDAgODkgODkiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGNpcmNsZSBpZD0iT3ZhbC02MiIgY3g9IjQ0LjUiIGN5PSI0NC41IiByPSI0NC41Ij48L2NpcmNsZT4gICAgICAgIDxnIGlkPSJHcm91cC0zIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMy4wMDAwMDAsIDI5LjAwMDAwMCkiPiAgICAgICAgICAgIDxnIGlkPSJsZWZ0LWV5ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4zODgzMjIsIDAuMTMyNTI1KSI+ICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTEiIGZpbGw9IiNGRkZGRkYiIGN4PSI5LjQwMDYzODYyIiBjeT0iMTUuNDgxMDM5IiByeD0iOS40MDA2Mzg2MiIgcnk9IjkuMzkyNzI3MjciPjwvZWxsaXBzZT4gICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMiIgZmlsbD0iIzI5MzYzQiIgY3g9IjEzLjAxMDk1NjEiIGN5PSIxNi4wNTk0ODgzIiByeD0iNi4xNzMzMjM2NiIgcnk9IjcuNDg5ODcwMTMiPjwvZWxsaXBzZT4gICAgICAgICAgICAgICAgPHBhdGggZD0iTTE3LjY0NzQ1NDMsMTEuMDk3MjM5NCBMMy4xMTYxMzc5NiwwLjU5ODQ5NTIyIiBpZD0iUGF0aC0xIiBzdHJva2U9IiMyOTM2M0IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+ICAgICAgICAgICAgPC9nPiAgICAgICAgICAgIDxnIGlkPSJyaWdodC1leWUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjAwMDAwMCwgMTMuNjMyNTI1KSBzY2FsZSgtMSwgMSkgdHJhbnNsYXRlKC01My4wMDAwMDAsIC0xMy42MzI1MjUpIHRyYW5zbGF0ZSg0My4wMDAwMDAsIDEuMTMyNTI1KSI+ICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTEiIGZpbGw9IiNGRkZGRkYiIGN4PSI5LjQwMDYzODYyIiBjeT0iMTUuNDMzNDE5OSIgcng9IjkuNDAwNjM4NjIiIHJ5PSI5LjM5MjcyNzI3Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTIiIGZpbGw9IiMyOTM2M0IiIGN4PSIxMy4wMTA5NTYxIiBjeT0iMTYuMDExODY5MiIgcng9IjYuMDU5MjI4MDgiIHJ5PSI3LjM1MTQ0MjA5Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xOC4yODIxMzA4LDExLjMzOTA5NzQgTDIuNSwxLjM2NzQ3NDc2IiBpZD0iUGF0aC0xIiBzdHJva2U9IiMyOTM2M0IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+ICAgICAgICAgICAgPC9nPiAgICAgICAgPC9nPiAgICA8L2c+PC9zdmc+)\n\n}", ""]);
+	exports.push([module.id, ".ball {\n  width:            96px;\n  width:            6rem;\n  height:            96px;\n  height:           6rem;\n  border:            4px solid #FFCEA5;\n  border:           0.25rem solid #FFCEA5;\n  border-radius:    50%;\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iOTZweCIgaGVpZ2h0PSI5NnB4IiB2aWV3Qm94PSIwIDAgOTYgOTYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz4gICAgICAgIDxyYWRpYWxHcmFkaWVudCBjeD0iNTAlIiBjeT0iMCUiIGZ4PSI1MCUiIGZ5PSIwJSIgcj0iMTAwJSIgaWQ9InJhZGlhbEdyYWRpZW50LTEiPiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiNGRkYxRTEiIG9mZnNldD0iMCUiPjwvc3RvcD4gICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjRkZCMTcwIiBvZmZzZXQ9IjEwMCUiPjwvc3RvcD4gICAgICAgIDwvcmFkaWFsR3JhZGllbnQ+ICAgIDwvZGVmcz4gICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTEiIGZpbGw9InVybCgjcmFkaWFsR3JhZGllbnQtMSkiIHg9IjAiIHk9IjAiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiI+PC9yZWN0PiAgICA8L2c+PC9zdmc+);\n  -webkit-transform:        rotate(-90deg);\n          transform:        rotate(-90deg);\n  position:         absolute;\n  left:             100%;\n  bottom:           50%;\n  margin-bottom:            -48px;\n  margin-bottom:    -3rem;\n  box-sizing:       border-box\n  /*&--3 &__inner {\n    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iODlweCIgaGVpZ2h0PSI4OXB4IiB2aWV3Qm94PSIwIDAgODkgODkiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGcgaWQ9Ikdyb3VwLTYiPiAgICAgICAgICAgIDxwYXRoIGQ9Ik00NC41LDg5IEM2OS4wNzY2NzE0LDg5IDg5LDY5LjA3NjY3MTQgODksNDQuNSBDODksMTkuOTIzMzI4NiA2OS4wNzY2NzE0LDAgNDQuNSwwIEMxOS45MjMzMjg2LDAgMCwxOS45MjMzMjg2IDAsNDQuNSBDMCw2OS4wNzY2NzE0IDE5LjkyMzMyODYsODkgNDQuNSw4OSBaIiBpZD0iT3ZhbC02MiI+PC9wYXRoPiAgICAgICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy4wMDAwMDAsIDM2LjAwMDAwMCkiPiAgICAgICAgICAgICAgICA8ZyBpZD0iR3JvdXAtNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTIuODEzNDAwLCAwLjQyODU3MSkiPiAgICAgICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMTQiIGZpbGw9IiNGRkZGRkYiIGN4PSI5LjIwMTI3OTEyIiBjeT0iOS4yMzIxNDI4NiIgcng9IjkuMjAxMjc5MTIiIHJ5PSI5LjIzMjE0Mjg2Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTguNDAyNTU4Miw5LjIzMjE0Mjg2IEMxOC40MDI1NTgyLDQuMTMzMzcxMTUgMTQuMjgzMDA1MywwIDkuMjAxMjc5MTIsMCBDNC4xMTk1NTI5OSwwIC01LjE1MTQzNDgzZS0xNCw0LjEzMzM3MTE1IC01LjE1MTQzNDgzZS0xNCw5LjIzMjE0Mjg2IEwxOC40MDI1NTgyLDkuMjMyMTQyODYgWiIgaWQ9Ik92YWwtMTQiIGZpbGw9IiMyOTM2M0IiPjwvcGF0aD4gICAgICAgICAgICAgICAgPC9nPiAgICAgICAgICAgICAgICA8ZyBpZD0iR3JvdXAtNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTMuNjc4NDkyLCAwLjQyODU3MSkiPiAgICAgICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMTQiIGZpbGw9IiNGRkZGRkYiIGN4PSI5LjIwMTI3OTEyIiBjeT0iOS4yMzIxNDI4NiIgcng9IjkuMjAxMjc5MTIiIHJ5PSI5LjIzMjE0Mjg2Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTguNDAyNTU4Miw5LjIzMjE0Mjg2IEMxOC40MDI1NTgyLDQuMTMzMzcxMTUgMTQuMjgzMDA1MywwIDkuMjAxMjc5MTIsMCBDNC4xMTk1NTI5OSwwIC01LjQ4ODk0MjYzZS0xMyw0LjEzMzM3MTE1IC01LjQ4ODk0MjYzZS0xMyw5LjIzMjE0Mjg2IEwxOC40MDI1NTgyLDkuMjMyMTQyODYgWiIgaWQ9Ik92YWwtMTQiIGZpbGw9IiMyOTM2M0IiPjwvcGF0aD4gICAgICAgICAgICAgICAgPC9nPiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMzUuMzAwNzQxNCwzMy43MDQxNjc3IEMzOC43OTk2OTM5LDI3LjY2NTUxMjQgNDMuNDE5MjUyOCwyOS45OTA3MDk3IDUxLjUzNzc2NDIsMjkuOTkwNzA5NiIgaWQ9IlBhdGgtMTAiIHN0cm9rZT0iIzI5MzYzQiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjwvcGF0aD4gICAgICAgICAgICAgICAgPGcgaWQ9ImdsYXJlIiBvcGFjaXR5PSIwLjciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuOTA1NjEyLCAxNi43MTY4MzcpIiBmaWxsPSIjRkZGRkZGIj4gICAgICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTIwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2LjMyOTg2OSwgNi42ODU4NjgpIHJvdGF0ZSg0OC4wMDAwMDApIHRyYW5zbGF0ZSgtNi4zMjk4NjksIC02LjY4NTg2OCkgIiBjeD0iNi4zMjk4Njg2OSIgY3k9IjYuNjg1ODY4MzQiIHJ4PSIxLjk5OTA1NTEiIHJ5PSI2LjY4NTg2ODM0Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOS4wNTI5ODgsIDEwLjQzMTkwNSkgcm90YXRlKDQ4LjAwMDAwMCkgdHJhbnNsYXRlKC05LjA1Mjk4OCwgLTEwLjQzMTkwNSkgIiBjeD0iOS4wNTI5ODc5OCIgY3k9IjEwLjQzMTkwNTEiIHJ4PSIxLjk5OTA1NTEiIHJ5PSIzLjM0MjkzNDE3Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgIDwvZz4gICAgICAgICAgICA8L2c+ICAgICAgICA8L2c+ICAgIDwvZz48L3N2Zz4=);\n  }\n  &--3 &__inner2 {\n    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iODlweCIgaGVpZ2h0PSI4OXB4IiB2aWV3Qm94PSIwIDAgODkgODkiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGcgaWQ9Ikdyb3VwLTYiPiAgICAgICAgICAgIDxwYXRoIGQ9Ik00NC41LDg5IEM2OS4wNzY2NzE0LDg5IDg5LDY5LjA3NjY3MTQgODksNDQuNSBDODksMTkuOTIzMzI4NiA2OS4wNzY2NzE0LDAgNDQuNSwwIEMxOS45MjMzMjg2LDAgMCwxOS45MjMzMjg2IDAsNDQuNSBDMCw2OS4wNzY2NzE0IDE5LjkyMzMyODYsODkgNDQuNSw4OSBaIiBpZD0iT3ZhbC02MiI+PC9wYXRoPiAgICAgICAgICAgIDxnIGlkPSJHcm91cC0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxOS4wMDAwMDAsIDIzLjAwMDAwMCkiIHN0cm9rZT0iIzI5MzYzQiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMC45MTQxMTIxOCw3Ljc0MzcyMjEgQzAuOTE0MTEyMTgsNy43NDM3MjIxIDQuODcxODcxMTgsNy43NDM3MjIxIDguODI5NjMwMTgsMC41Mzg0ODcwMjYiIGlkPSJQYXRoLTExIj48L3BhdGg+ICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik00My4yNDY0NTQzLDcuNzU2NzU2MjYgQzQzLjI0NjQ1NDMsNy43NTY3NTYyNiA0OC4zNDE1MDIyLDcuNzU2NzU2MjYgNTEuMTYxOTcyMywwLjU1MTUyMTE5MSIgaWQ9IlBhdGgtMTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ3LjIwNDIxMywgNC4xNTQxMzkpIHJvdGF0ZSg5My4wMDAwMDApIHRyYW5zbGF0ZSgtNDcuMjA0MjEzLCAtNC4xNTQxMzkpICI+PC9wYXRoPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==);\n  }*/\n\n}\n.ball:before, .ball:after {\n  content:            '';\n  position:            absolute\n\n}\n.ball:before {\n  width:            11px;\n  width:            0.6875rem;\n  height:            11px;\n  height:            0.6875rem;\n  border-radius:            0.25rem;\n  background:            #29363B;\n  left:            50%;\n  top:            -3px;\n  top:            -0.1875rem;\n  margin-left:            -5.5px;\n  margin-left:            -0.34375rem;\n  margin-top:            -11px;\n  margin-top:            -0.6875rem\n\n}\n.ball:after {\n  width:            39px;\n  width:            2.4375rem;\n  height:            17px;\n  height:            1.0625rem;\n  opacity:            0.75;\n  -webkit-transform:            rotate(323deg);\n          transform:            rotate(323deg);\n  background:            #FFFFFF;\n  border-radius:            50%;\n  top:            6px;\n  top:            0.375rem;\n  left:            2px;\n  left:            0.125rem;\n  z-index:            -1\n\n}\n.ball__eye {\n  width:            20px;\n  width:            1.25rem;\n  height:            20px;\n  height:            1.25rem;\n  position:            absolute;\n  top:            34%;\n  background:            #FFF;\n  border-radius:            50%;\n  z-index:            -1;\n  overflow:            hidden\n\n}\n.ball__eye--1 {\n  left:            16%\n\n}\n.ball__eye--2 {\n  left:            66%\n\n}\n.ball--1 .ball__eye {\n  top:            37%\n\n}\n.ball__inner, .ball__inner2, .ball__inner3 {\n  position:            absolute;\n  left:            0;\n  top:            0;\n  width:            100%;\n  height:            100%;\n  border-radius:            50%\n  /*z-index:        1;*/\n\n}\n.ball--3 .ball__eye {\n  top:            41.5%\n\n}\n.ball--1 .ball__inner {\n  /*background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iOTBweCIgaGVpZ2h0PSI5MHB4IiB2aWV3Qm94PSIwIDAgOTAgOTAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGcgaWQ9Ikdyb3VwLTEwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NS45MTYzNDksIDM1LjA3MzI3Mykgcm90YXRlKC0yLjAwMDAwMCkgdHJhbnNsYXRlKC00NS45MTYzNDksIC0zNS4wNzMyNzMpIHRyYW5zbGF0ZSgxMy45MTYzNDksIDE3LjU3MzI3MykiPiAgICAgICAgICAgIDxnIGlkPSJHcm91cC05IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NC45MjA2NzQsIDE1LjA2OTg1NikiIGZpbGw9IiNGRkZGRkYiPiAgICAgICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMSIgY3g9IjkuNDMzMzQxNTQiIGN5PSI5LjQzMzM0MTU0IiByeD0iOS40MzMzNDE1NCIgcnk9IjkuNDMzMzQxNTQiPjwvZWxsaXBzZT4gICAgICAgICAgICA8L2c+ICAgICAgICAgICAgPGcgaWQ9Ikdyb3VwLTkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuNzcwMTAwLCAxNC40ODAxOTIpIiBmaWxsPSIjRkZGRkZGIj4gICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMjEiIGN4PSI5LjQzMzM0MTU0IiBjeT0iOS40MzMzNDE1NCIgcng9IjkuNDMzMzQxNTQiIHJ5PSI5LjQzMzM0MTU0Ij48L2VsbGlwc2U+ICAgICAgICAgICAgPC9nPiAgICAgICAgICAgIDxwYXRoIGQ9Ik01LjkwMDMwNjE4LDguNDE3NzU1NDMgQzUuOTAwMzA2MTgsOC40MTc3NTU0MyAxMS41NzQ4MzE0LDkuNTc5NDI5OTYgMTcuMjQ5MzU2NSw0LjA0NTQ0NzI1IiBpZD0iUGF0aC0xMSIgc3Ryb2tlPSIjMjkzNjNCIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuNTc0ODMxLCA2LjI4MjM4Nikgcm90YXRlKDQ2LjAwMDAwMCkgdHJhbnNsYXRlKC0xMS41NzQ4MzEsIC02LjI4MjM4NikgIj48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTQ2LjA1ODc4MTEsOS42NzQ1OTkyOSBDNDYuMDU4NzgxMSw5LjY3NDU5OTI5IDUxLjczMzMwNjMsMTAuNzk5MTc3MiA1Ny40MDc4MzE1LDUuMzAyMjkxMTEiIGlkPSJQYXRoLTExIiBzdHJva2U9IiMyOTM2M0IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MS43MzMzMDYsIDcuNTM1ODUyKSBzY2FsZSgtMSwgMSkgcm90YXRlKDQzLjAwMDAwMCkgdHJhbnNsYXRlKC01MS43MzMzMDYsIC03LjUzNTg1MikgIj48L3BhdGg+ICAgICAgICA8L2c+ICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsLTYyIiBjeD0iNDQuODEyMzE4NyIgY3k9IjQ0LjYwMjI5MzciIHI9IjQ0LjUiPjwvY2lyY2xlPiAgICA8L2c+PC9zdmc+);*/\n\n}\n.ball--2 .ball__inner {\n  background-image:            url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iODlweCIgaGVpZ2h0PSI4OXB4IiB2aWV3Qm94PSIwIDAgODkgODkiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGNpcmNsZSBpZD0iT3ZhbC02MiIgY3g9IjQ0LjUiIGN5PSI0NC41IiByPSI0NC41Ij48L2NpcmNsZT4gICAgICAgIDxnIGlkPSJHcm91cC0xMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTYuMDAwMDAwLCAyNy4wMDAwMDApIj4gICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMSIgZmlsbD0iIzI5MzYzQiIgY3g9IjguODkzOTYzNjgiIGN5PSIxNy41NzE0Mjg2IiByeD0iOC44OTM5NjM2OCIgcnk9IjkiPjwvZWxsaXBzZT4gICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMSIgZmlsbD0iIzI5MzYzQiIgY3g9IjUxLjI0NjE3MTciIGN5PSIxNy41NzE0Mjg2IiByeD0iOC44OTM5NjM2OCIgcnk9IjkiPjwvZWxsaXBzZT4gICAgICAgICAgICA8cGF0aCBkPSJNNC44NjkyNjMxMyw0Ljk4NDIzNTQ5IEM0Ljg2OTI2MzEzLDQuOTg0MjM1NDkgOC43MDgyNTkxNyw3Ljc3MDM2ODMgMTUuNTY5Mzk5NiwwLjgxMjc3OTAxOCIgaWQ9IlBhdGgtMTEiIHN0cm9rZT0iIzI5MzYzQiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNNDQuODkzMzQwNSw0LjE3MTQ1NjQ3IEM0NC44OTMzNDA1LDQuMTcxNDU2NDcgNDkuMjMyNzg3NCw4LjMyNTc1MzM1IDU1LjU5MzQ3NjksMCIgaWQ9IlBhdGgtMTEiIHN0cm9rZT0iIzI5MzYzQiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUwLjI0MzQwOSwgMi42MDM5NDUpIHNjYWxlKC0xLCAxKSB0cmFuc2xhdGUoLTUwLjI0MzQwOSwgLTIuNjAzOTQ1KSAiPjwvcGF0aD4gICAgICAgICAgICA8ZyBpZD0iR3JvdXAtNyIgb3BhY2l0eT0iMC43IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1My42ODI4NzAsIDIyLjUwMDAwMCkiIGZpbGw9IiNGRkZGRkYiPiAgICAgICAgICAgICAgICA8ZWxsaXBzZSBpZD0iT3ZhbC0yMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNi43MTkzNDEsIDYuMTgxMzE5KSByb3RhdGUoNDguMDAwMDAwKSB0cmFuc2xhdGUoLTYuNzE5MzQxLCAtNi4xODEzMTkpICIgY3g9IjYuNzE5MzQwNjkiIGN5PSI2LjE4MTMxODY4IiByeD0iMS44MzI1NDc0NiIgcnk9IjYuMTgxMzE4NjgiPjwvZWxsaXBzZT4gICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMjAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwLjEzMjM1MCwgMTAuNTY5MTk1KSByb3RhdGUoNDguMDAwMDAwKSB0cmFuc2xhdGUoLTEwLjEzMjM1MCwgLTEwLjU2OTE5NSkgIiBjeD0iMTAuMTMyMzQ5NiIgY3k9IjEwLjU2OTE5NTMiIHJ4PSIxLjgzMjU0NzQ2IiByeT0iMy4wOTA2NTkzNCI+PC9lbGxpcHNlPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==)\n\n}\n.ball--4 .ball__inner {\n  background-image:            url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iODlweCIgaGVpZ2h0PSI4OXB4IiB2aWV3Qm94PSIwIDAgODkgODkiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+U2xpY2UgMTwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGNpcmNsZSBpZD0iT3ZhbC02MiIgY3g9IjQ0LjUiIGN5PSI0NC41IiByPSI0NC41Ij48L2NpcmNsZT4gICAgICAgIDxnIGlkPSJHcm91cC0zIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMy4wMDAwMDAsIDI5LjAwMDAwMCkiPiAgICAgICAgICAgIDxnIGlkPSJsZWZ0LWV5ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4zODgzMjIsIDAuMTMyNTI1KSI+ICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTEiIGZpbGw9IiNGRkZGRkYiIGN4PSI5LjQwMDYzODYyIiBjeT0iMTUuNDgxMDM5IiByeD0iOS40MDA2Mzg2MiIgcnk9IjkuMzkyNzI3MjciPjwvZWxsaXBzZT4gICAgICAgICAgICAgICAgPGVsbGlwc2UgaWQ9Ik92YWwtMiIgZmlsbD0iIzI5MzYzQiIgY3g9IjEzLjAxMDk1NjEiIGN5PSIxNi4wNTk0ODgzIiByeD0iNi4xNzMzMjM2NiIgcnk9IjcuNDg5ODcwMTMiPjwvZWxsaXBzZT4gICAgICAgICAgICAgICAgPHBhdGggZD0iTTE3LjY0NzQ1NDMsMTEuMDk3MjM5NCBMMy4xMTYxMzc5NiwwLjU5ODQ5NTIyIiBpZD0iUGF0aC0xIiBzdHJva2U9IiMyOTM2M0IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+ICAgICAgICAgICAgPC9nPiAgICAgICAgICAgIDxnIGlkPSJyaWdodC1leWUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjAwMDAwMCwgMTMuNjMyNTI1KSBzY2FsZSgtMSwgMSkgdHJhbnNsYXRlKC01My4wMDAwMDAsIC0xMy42MzI1MjUpIHRyYW5zbGF0ZSg0My4wMDAwMDAsIDEuMTMyNTI1KSI+ICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTEiIGZpbGw9IiNGRkZGRkYiIGN4PSI5LjQwMDYzODYyIiBjeT0iMTUuNDMzNDE5OSIgcng9IjkuNDAwNjM4NjIiIHJ5PSI5LjM5MjcyNzI3Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTIiIGZpbGw9IiMyOTM2M0IiIGN4PSIxMy4wMTA5NTYxIiBjeT0iMTYuMDExODY5MiIgcng9IjYuMDU5MjI4MDgiIHJ5PSI3LjM1MTQ0MjA5Ij48L2VsbGlwc2U+ICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xOC4yODIxMzA4LDExLjMzOTA5NzQgTDIuNSwxLjM2NzQ3NDc2IiBpZD0iUGF0aC0xIiBzdHJva2U9IiMyOTM2M0IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+ICAgICAgICAgICAgPC9nPiAgICAgICAgPC9nPiAgICA8L2c+PC9zdmc+)\n\n}", ""]);
 
 	// exports
 
@@ -11999,21 +11985,22 @@
 	    var opts = {
 	      parent: this.eye1,
 	      fill: _colors2.default.BLACK,
-	      radius: 3,
-	      scale: { 1: 2.1 },
+	      radius: 6.5,
+	      scale: { .5: 1 },
 	      isShowStart: true,
 	      top: '50%',
 	      left: '50%',
-	      x: (_x = {}, _x[eyeX] = 0, _x),
-	      y: 1,
+	      x: (_x = {}, _x[eyeX] = .5, _x),
+	      y: .5,
 	      easing: 'expo.in',
-	      duration: _constants2.default.LINE1_DURATION
+	      duration: _constants2.default.LINE1_DURATION,
+	      isForce3d: true
 	    };
 
 	    var eyeReturn = {
 	      delay: 2 * _constants2.default.LINE1_DURATION,
 	      x: eyeX,
-	      scale: 1
+	      scale: .5
 	    };
 
 	    var eye1 = new mojs.Shape((0, _extends3.default)({}, opts)).then(eyeReturn);
@@ -12030,13 +12017,14 @@
 	      parent: this.eye1,
 	      shape: 'rect',
 	      fill: _colors2.default.BLACK,
-	      top: '130%',
+	      top: '135%',
 	      left: '50%',
 	      radius: 10,
 	      // delay:        C.LINE1_DURATION,
 	      y: { 0: lidUp.y },
 	      duration: 40,
-	      timeline: { repeat: 5 }
+	      timeline: { repeat: 5 },
+	      isForce3d: true
 	    };
 
 	    var lidReturn = { y: lidUp.y - 5 };
@@ -12056,22 +12044,23 @@
 	      parent: this.face,
 	      shape: 'line',
 	      stroke: _colors2.default.BLACK,
-	      radius: 6,
+	      radius: 8,
 	      angle: { 0: angle },
-	      left: '28%',
-	      top: '25%',
+	      left: '32%',
+	      top: '30%',
 	      y: (_y = {}, _y[yShift] = 0, _y),
 	      x: (_x2 = {}, _x2[xShift] = 0, _x2),
 	      strokeWidth: 3,
 	      strokeLinecap: 'round',
 	      isShowStart: true,
 	      duration: 50,
-	      delay: _constants2.default.LINE1_DURATION
+	      delay: _constants2.default.LINE1_DURATION,
+	      isForce3d: true
 	    };
 
 	    var brow1 = new mojs.Shape((0, _extends3.default)({}, browOpts, {
 	      angle: { 0: -angle },
-	      left: '74%',
+	      left: '72%',
 	      x: (_x3 = {}, _x3[-xShift] = 0, _x3)
 	    })).then({
 	      angle: 0,
@@ -12107,7 +12096,8 @@
 	      top: '77%',
 	      duration: mouthDuration,
 	      delay: 3 * _constants2.default.LINE1_DURATION,
-	      x: { 0: -10 }
+	      x: { 0: -10 },
+	      isForce3d: true
 	    };
 
 	    var speechReturn = {
@@ -12128,22 +12118,35 @@
 	      isShowEnd: false
 	    }));
 
-	    var speechMouth2 = new mojs.Shape((0, _extends3.default)({}, speechOpts, {
-	      x: { 0: -12 }
-	    })).then((0, _extends3.default)({}, speechReturn, {
-	      x: -10
-	    })).then({
-	      scaleY: 6,
-	      scaleX: 3,
-	      x: -8
-	    }).then(speechReturn).then({
-	      scaleY: 4,
-	      scaleX: 6
-	    }).then((0, _extends3.default)({}, speechReturn, {
-	      isShowEnd: false
-	    }));
+	    // const speechMouth2 = new mojs.Shape({
+	    //   ...speechOpts,
+	    //   x:            { 0: -12 }
+	    // })
+	    // .then({
+	    //   ...speechReturn,
+	    //   x:           -10
+	    // })
+	    // .then({
+	    //   scaleY:       6,
+	    //   scaleX:       3,
+	    //   x:           -8
+	    // })
+	    // .then(speechReturn)
+	    // .then({
+	    //   scaleY:       4,
+	    //   scaleX:       6,
+	    // }).then({
+	    //   ...speechReturn,
+	    //   isShowEnd:    false
+	    // });
 
 	    var noise = mojs.easing.path('M0,100 L24.2114672,99.7029845 L27.0786839,106.645089 L29.2555809,93.3549108 L32.0340385,103.816964 L35.3459816,94.6015626 L38.3783493,103.092634 L41.0513382,95.9547991 L43.7739944,106.645089 L45.6729927,96.8973214 L50,105.083147 L53.3504448,93.3549108 L57.7360497,103.816964 L60.8616066,95.9547991 L65.0345993,103.092634 L68.6997757,97.5106029 L71.6646194,102.03125 L75.5066986,96.5672433 L78.2949219,102.652344 L81.0313873,96.8973214 L84.0174408,102.328264 L86.0842667,97.7332592 L88.7289352,101.606306 L91.1429977,98.3533763 L94.3822556,101.287388 L97.0809174,98.7254467 L100,100');
+
+	    this.face.style['backface-visibility'] = 'hidden';
+	    this.face.style[mojs.h.prefix.css + 'backface-visibility'] = 'hidden';
+
+	    this.face2.style['backface-visibility'] = 'hidden';
+	    this.face2.style[mojs.h.prefix.css + 'backface-visibility'] = 'hidden';
 
 	    var mouthNoize = new mojs.Tween({
 	      duration: 3 * _constants2.default.LINE1_DURATION,
@@ -12160,29 +12163,34 @@
 	      top: '74%',
 	      left: '50%',
 	      parent: this.face2,
-	      radiusY: { 4: 9.5 },
+	      radiusY: 9.5,
 	      easing: 'expo.out',
 	      radiusX: 18,
 	      rx: 12,
 	      duration: 2 * _constants2.default.LINE1_DURATION,
 	      delay: _constants2.default.LINE1_DURATION,
-	      isShowEnd: false
+	      isShowEnd: false,
+	      isTimelineLess: true,
+	      isForce3d: true
 	    });
 
 	    var angerMouth = new mojs.Shape({
 	      fill: 'none',
 	      shape: 'zigzag',
-	      angle: -45,
 	      top: '76%',
 	      left: '50%',
 	      stroke: _colors2.default.BLACK,
-	      strokeWidth: 3,
+	      strokeWidth: 2,
 	      parent: this.face2,
-	      radius: 8,
-	      points: 4,
+	      radius: 5,
+	      radiusX: 14,
+	      y: 1,
+	      points: 9,
 	      duration: 2 * _constants2.default.LINE1_DURATION,
 	      delay: _constants2.default.LINE1_DURATION,
-	      isShowEnd: false
+	      isShowEnd: false,
+	      isTimelineLess: true,
+	      isForce3d: true
 	    });
 
 	    var disappointMouth = new mojs.Shape({
@@ -12190,19 +12198,21 @@
 	      strokeWidth: 3,
 	      strokeLinecap: 'round',
 	      fill: 'none',
-	      radius: 8,
+	      radius: 6,
 	      radiusX: 10,
 	      isShowStart: true,
 	      isShowEnd: false,
 	      parent: this.el,
 	      left: '50%',
-	      top: '82%',
+	      top: '76%',
 	      strokeDasharray: '35% 100%',
 	      strokeDashoffset: '77%',
-	      duration: _constants2.default.LINE1_DURATION
+	      duration: _constants2.default.LINE1_DURATION,
+	      isTimelineLess: true,
+	      isForce3d: true
 	    });
 
-	    return [disappointMouth, angerMouth, angerMouthBackground, mouthNoize, speechMouth1, speechMouth2, new _trail2.default({ parent: this.el, delay: 2.95 * _constants2.default.LINE1_DURATION }), new _rightTrail2.default({ parent: this.el, delay: .5 * _constants2.default.LINE1_DURATION })];
+	    return [disappointMouth, speechMouth1, angerMouth, angerMouthBackground, mouthNoize, new _trail2.default({ parent: this.el, delay: 3.15 * _constants2.default.LINE1_DURATION }), new _rightTrail2.default({ parent: this.el, delay: .65 * _constants2.default.LINE1_DURATION })];
 	  };
 
 	  return Ball2;
@@ -12252,26 +12262,26 @@
 	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
 	  }
 
-	  Trail.prototype._vars = function _vars() {
+	  Trail.prototype._declareOpts = function _declareOpts() {
 	    var p = this._props;
 	    this.trailOpts = {
 	      fill: 'none',
 	      stroke: 'white',
-	      shape: 'arc',
+	      shape: 'curve',
 	      radiusY: 3,
-	      radiusX: 20,
+	      radiusX: 25,
 	      strokeDasharray: '100%',
 	      strokeDashoffset: { '100%': '0%' },
 	      top: '26%',
-	      left: -40,
+	      left: -42,
 	      angle: 205,
 	      delay: p.delay,
 	      duration: _constants2.default.LINE1_DURATION / 4,
-	      strokeWidth: { 10: 3 },
+	      strokeWidth: { 20: 7 },
 	      isShowStart: true,
-	      easing: 'linear.none'
+	      easing: 'linear.none',
+	      opacity: .75
 	    };
-	    this.trail2Opts = {};
 
 	    this.trailReturn = {
 	      easing: 'linear.none',
@@ -12279,22 +12289,32 @@
 	    };
 	  };
 
+	  Trail.prototype._declareOpts2 = function _declareOpts2() {
+	    var p = this._props;
+
+	    this.trail2Opts = (0, _extends3.default)({}, this.trailOpts, {
+	      top: '42%',
+	      left: this.trailOpts.left + 5,
+	      angle: this.trailOpts.angle - 3,
+	      radiusX: 8,
+	      radiusY: 1.5
+	    });
+	  };
+
 	  Trail.prototype._render = function _render() {
 	    _Module.prototype._render.call(this);
 
+	    this._declareOpts();
+	    this._declareOpts2();
+
 	    this.trailOpts.parent = this.el;
+	    this.trail2Opts.parent = this.el;
 
 	    var trail1 = new mojs.Shape(this.trailOpts).then((0, _extends3.default)({
 	      duration: _constants2.default.LINE1_DURATION / 5
 	    }, this.trailReturn));
 
-	    var trail2 = new mojs.Shape((0, _extends3.default)({}, this.trailOpts, {
-	      top: '47%',
-	      left: this.trailOpts.left + 5,
-	      angle: this.trailOpts.angle - 5,
-	      radiusX: 8,
-	      radiusY: 1.5
-	    })).then((0, _extends3.default)({
+	    var trail2 = new mojs.Shape(this.trail2Opts).then((0, _extends3.default)({
 	      duration: _constants2.default.LINE1_DURATION / 6
 	    }, this.trailReturn));
 
@@ -12356,13 +12376,18 @@
 	    return (0, _possibleConstructorReturn3.default)(this, _Trail.apply(this, arguments));
 	  }
 
-	  RightTrail.prototype._vars = function _vars() {
-	    _Trail.prototype._vars.call(this);
+	  RightTrail.prototype._declareOpts = function _declareOpts() {
+	    _Trail.prototype._declareOpts.call(this);
 	    this.trailOpts.strokeDashoffset = { '-100%': '0%' };
-	    this.trailOpts.left = '140%';
-	    this.trailOpts.angle = 170;
+	    this.trailOpts.left = '155%';
+	    this.trailOpts.angle = 157;
 	    this.trailOpts.top = '31%';
 	    this.trailReturn.strokeDashoffset = '-100%';
+	  };
+
+	  RightTrail.prototype._declareOpts2 = function _declareOpts2() {
+	    _Trail.prototype._declareOpts2.call(this);
+	    this.trail2Opts.top = '45%';
 	  };
 
 	  return RightTrail;
@@ -12482,14 +12507,16 @@
 	      fill: 'none',
 	      stroke: _colors2.default.BLACK,
 	      strokeWidth: 3,
-	      points: 3,
+	      points: 5,
+	      radiusY: 4,
 	      radius: 10,
-	      angle: -45,
+	      // angle:       -45,
 	      isShowStart: true,
 	      top: '70%',
 	      left: '52%',
 	      duration: EYE_DURATION,
-	      scale: { 1: 1.1 }
+	      scale: { 1: 1.1 },
+	      isForce3d: true
 	    }).then({ scale: 1 });
 
 	    var glareOpts = {
@@ -12503,7 +12530,8 @@
 	      isShowStart: true,
 	      scale: { 1: 1.5 },
 	      x: { 0: -2 },
-	      y: { 0: -1 }
+	      y: { 0: -1 },
+	      isForce3d: true
 	    };
 
 	    var glareReturnOpts = { scale: 1, x: 0, y: 0 };
@@ -12582,10 +12610,13 @@
 	      y: { 0: -yShift },
 	      parent: this.el,
 	      delay: this._props.delay,
-	      radius: { 5: 0 },
+	      radius: 5,
+	      scale: { 1: 0 },
 	      top: '50%',
 	      left: direction === 1 ? '100%' : '110%',
-	      duration: 300
+	      duration: 300,
+	      isTimelineLess: true,
+	      isForce3d: true
 	    };
 
 	    var collision1 = new mojs.Shape(collisionOpts);
@@ -12601,37 +12632,39 @@
 	      x: { 0: 10 }
 	    }));
 
-	    var collision4 = new mojs.Shape({
+	    var starOpts = {
 	      parent: this.el,
 	      shape: 'cross',
 	      fill: 'none',
 	      stroke: 'white',
-	      strokeWidth: { 3: 2 },
+	      strokeWidth: 3,
 	      direction: 1,
 	      left: collisionOpts.left,
 	      radius: { 9: 0 },
 	      y: { 0: -yShift / 5 },
 	      delay: this._props.delay + collisionOpts.duration / 2,
 	      x: 'rand(-15, 15)'
-	    });
+	    };
 
-	    var collision5 = new mojs.Shape({
-	      parent: this.el,
-	      shape: 'cross',
-	      fill: 'none',
-	      stroke: 'white',
-	      strokeWidth: { 3: 2 },
-	      direction: 1,
-	      left: collisionOpts.left,
+	    var collision4 = new mojs.Shape(starOpts);
+
+	    var collision5 = new mojs.Shape((0, _extends3.default)({}, starOpts, {
 	      top: '50%',
 	      radius: { 8: 0 },
 	      y: { 0: yShift / 2 },
-	      delay: this._props.delay + collisionOpts.duration / 2
-	    });
+	      x: 0
+	    }));
 
-	    // x:    'rand(-15, 15)',
+	    var collision6 = new mojs.Shape((0, _extends3.default)({}, starOpts, {
+	      top: '50%',
+	      radius: { 9: 0 },
+	      y: { 0: yShift },
+	      x: { 0: 10 },
+	      delay: starOpts.delay - 25
+	    }));
+
 	    this.timeline = new mojs.Timeline();
-	    this.timeline.add(collision1, collision2, collision3, collision4, collision5);
+	    this.timeline.add(collision1, collision2, collision3, collision4, collision5, collision6);
 	  };
 
 	  return Collision;
@@ -12721,7 +12754,8 @@
 	      x: { 0: 5 },
 	      scaleX: { 1: .85 },
 	      duration: _constants2.default.LINE1_DURATION / 4,
-	      delay: _constants2.default.LINE1_DURATION
+	      delay: _constants2.default.LINE1_DURATION,
+	      isForce3d: true
 	    }).then({
 	      angle: 0,
 	      x: 0,
@@ -12754,7 +12788,8 @@
 	      easing: 'expo.out',
 	      isShowStart: true,
 	      top: '53%',
-	      left: '50%'
+	      left: '50%',
+	      isForce3d: true
 	    };
 
 	    var returnOpts = {
@@ -12784,7 +12819,7 @@
 	    var duration = 50;
 
 	    var browOpts = {
-	      shape: 'arc',
+	      shape: 'curve',
 	      stroke: _colors2.default.BLACK,
 	      strokeWidth: 3,
 	      strokeLinecap: 'round',
@@ -12800,7 +12835,8 @@
 	      x: { 0: xShift },
 	      y: { 0: xShift / 2 },
 	      duration: duration,
-	      delay: _constants2.default.LINE1_DURATION
+	      delay: _constants2.default.LINE1_DURATION,
+	      isForce3d: true
 	    };
 	    var brow1 = new mojs.Shape(browOpts).then({
 	      x: -xShift / 4,
@@ -12845,24 +12881,27 @@
 	      isShowEnd: true,
 	      parent: this.eye1,
 	      left: '50%',
-	      top: '-17%',
-	      y: (_y = {}, _y[yShift] = 0, _y),
+	      top: '-32%',
+	      y: (_y = {}, _y[yShift] = 1, _y),
 	      duration: duration,
 	      delay: _constants2.default.LINE1_DURATION
 	    };
-	    var lid1 = new mojs.Shape(lidOpts).then({
-	      y: yShift,
-	      delay: 2 * _constants2.default.LINE1_DURATION - duration
-	    });
+	    // isForce3d:    true
+	    var lid1 = new mojs.Shape(lidOpts);
+	    // .then({
+	    //   y:            yShift,
+	    //   delay:        2*C.LINE1_DURATION - duration,
+	    // });
 
 	    var lid2 = new mojs.Shape((0, _extends3.default)({}, lidOpts, {
 	      parent: this.eye2
-	    })).then({
-	      y: yShift,
-	      delay: 2 * _constants2.default.LINE1_DURATION - duration
-	    });
+	    }));
+	    // .then({
+	    //   y:            yShift,
+	    //   delay:        2*C.LINE1_DURATION - duration,
+	    // });
 
-	    return [lid1, lid2];
+	    return [];
 	  };
 
 	  return Ball3;
@@ -12940,12 +12979,16 @@
 	    _Ball.prototype._render.call(this);
 	    this.el.classList.add('ball--4');
 
-	    var timeline = new mojs.Timeline();
-	    var startAngle = 0;
-	    var endAngle = 25;
-	    var dashStart = '30% 100%';
-	    var easing = mojs.easing.path('M0,100 L15,100 C47.3046875,-362.261716 100,5.68434189e-14 100,5.68434189e-14');
-	    var scaleSize = .35;
+	    var timeline = new mojs.Timeline(),
+	        startAngle = 0,
+	        endAngle = 25,
+	        dashStart = '30% 100%',
+	        easing = mojs.easing.path('M0,100 L15,100 C47.3046875,-362.261716 100,5.68434189e-14 100,5.68434189e-14'),
+	        scaleSize = .35;
+
+	    this.face.style['backface-visibility'] = 'hidden';
+	    this.face.style[mojs.h.prefix.css + 'backface-visibility'] = 'hidden';
+
 	    var mouth = new mojs.Shape({
 	      fill: 'none',
 	      stroke: _colors2.default.BLACK,
@@ -12958,8 +13001,6 @@
 	      top: 75,
 	      duration: _constants2.default.LINE1_DURATION / 2,
 	      delay: _constants2.default.LINE1_DURATION,
-	      // x:                { 0: -10 },
-	      // strokeDasharray:  '35% 100%',
 	      strokeDasharray: (_strokeDasharray = {}, _strokeDasharray[dashStart] = '10% 100%', _strokeDasharray),
 	      strokeDashoffset: '-60%',
 	      angle: (_angle = {}, _angle[startAngle] = endAngle, _angle),
@@ -13115,7 +13156,7 @@
 
 
 	// module
-	exports.push([module.id, ".scene {\n  /*outline:      1px solid white;*/\n  width:        400px;\n  width:        25rem;\n  height:        370px;\n  height:       23.125rem;\n  position:     absolute;\n  left:         50%;\n  top:          50%;\n  margin-left:        -200px;\n  margin-left:  -12.5rem;\n  margin-top:        -185px;\n  margin-top:   -11.5625rem\n}\n.scene__bar {\n  background:        #29363B;\n  height:        4px;\n  height:        0.25rem;\n  border-radius:        0.9375rem\n}\n.scene__dust {\n  width:        240px;\n  width:        15rem;\n  height:        200px;\n  height:        12.5rem;\n  /*border: 1px solid white;*/\n  position:        absolute;\n  bottom:        37.5px;\n  bottom:        2.34375rem;\n  right:        -180px;\n  right:        -11.25rem;\n  overflow:        hidden\n}\n.scene__bar-handle {\n  position:        absolute;\n  width:        10px;\n  width:        0.625rem;\n  height:        16px;\n  height:        1rem;\n  border-radius:        0.625rem;\n  background:        #29363B;\n  top:        -5px;\n  top:        -0.3125rem;\n  z-index:        1\n}\n.scene__bar-handle:nth-of-type(1) {\n  margin-left:        47px;\n  margin-left:        2.9375rem\n}\n.scene__bar-handle:nth-of-type(2) {\n  margin-left:        143px;\n  margin-left:        8.9375rem\n}\n.scene__bar-handle:nth-of-type(3) {\n  margin-left:        239px;\n  margin-left:        14.9375rem\n}\n.scene__bar-handle:nth-of-type(4) {\n  margin-left:        335px;\n  margin-left:        20.9375rem\n}", ""]);
+	exports.push([module.id, ".scene {\n  /*outline:      1px solid white;*/\n  width:        400px;\n  width:        25rem;\n  height:        370px;\n  height:       23.125rem;\n  position:     absolute;\n  left:         50%;\n  top:          50%;\n  margin-left:        -200px;\n  margin-left:  -12.5rem;\n  margin-top:        -185px;\n  margin-top:   -11.5625rem\n}\n.scene__bar {\n  background:        #29363B;\n  height:        4px;\n  height:        0.25rem;\n  border-radius:        0.9375rem\n}\n.scene__dust {\n  width:        240px;\n  width:        15rem;\n  height:        200px;\n  height:        12.5rem;\n  /*border: 1px solid white;*/\n  position:        absolute;\n  bottom:        37.5px;\n  bottom:        2.34375rem;\n  right:        -180px;\n  right:        -11.25rem;\n  overflow:        hidden;\n  z-index:        1\n}\n.scene__bar-handle {\n  position:        absolute;\n  width:        10px;\n  width:        0.625rem;\n  height:        16px;\n  height:        1rem;\n  border-radius:        0.625rem;\n  background:        #29363B;\n  top:        -5px;\n  top:        -0.3125rem;\n  z-index:        1\n}\n.scene__bar-handle:nth-of-type(1) {\n  margin-left:        47px;\n  margin-left:        2.9375rem\n}\n.scene__bar-handle:nth-of-type(2) {\n  margin-left:        143px;\n  margin-left:        8.9375rem\n}\n.scene__bar-handle:nth-of-type(3) {\n  margin-left:        239px;\n  margin-left:        14.9375rem\n}\n.scene__bar-handle:nth-of-type(4) {\n  margin-left:        335px;\n  margin-left:        20.9375rem\n}", ""]);
 
 	// exports
 
@@ -13127,6 +13168,118 @@
 	module.exports = {
 		"scene": "_scene_y2oup_5"
 	};
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _classCallCheck2 = __webpack_require__(40);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(41);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(77);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _module = __webpack_require__(87);
+
+	var _module2 = _interopRequireDefault(_module);
+
+	var _constants = __webpack_require__(96);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Dust = function (_Module) {
+	  (0, _inherits3.default)(Dust, _Module);
+
+	  function Dust() {
+	    (0, _classCallCheck3.default)(this, Dust);
+	    return (0, _possibleConstructorReturn3.default)(this, _Module.apply(this, arguments));
+	  }
+
+	  Dust.prototype._declareDefaults = function _declareDefaults() {
+	    _Module.prototype._declareDefaults.call(this);
+	    this._defaults.right = 0;
+	    this._defaults.direction = 1;
+	  };
+
+	  Dust.prototype._render = function _render() {
+	    var _ref,
+	        _ref2,
+	        _this2 = this;
+
+	    _Module.prototype._render.call(this);
+	    var p = this._props;
+
+	    this._setStyles();
+
+	    var scene = document.querySelector('#js-scene');
+	    scene.appendChild(this.el);
+
+	    var SwirlStagger = mojs.stagger(mojs.ShapeSwirl);
+	    var dust = new SwirlStagger((_ref = {
+	      parent: this.el,
+	      quantifier: 7,
+	      isShowStart: true,
+	      radius: 20,
+	      top: '100%',
+	      left: '50%',
+	      fill: 'white'
+	    }, _ref['radius'] = 'rand(3, 15)', _ref.scale = { 1: 0 }, _ref.isForce3d = true, _ref.isTimelineLess = true, _ref.delay = 'stagger(' + p.delay + ', 45)', _ref.x = { 0: 70 * p.direction }, _ref.y = { 0: -20 }, _ref.direction = this._props.direction, _ref.swirlFrequency = 1, _ref.swirlSize = 50, _ref));
+
+	    var dustTrail = new SwirlStagger((_ref2 = {
+	      parent: this.el,
+	      quantifier: 2,
+	      isShowStart: true,
+	      radius: 20,
+	      top: '100%',
+	      left: '50%',
+	      fill: 'white'
+	    }, _ref2['radius'] = 'rand(3, 15)', _ref2.scale = { 1: 0 }, _ref2.delay = 'stagger(' + (p.delay + 200) + ', 45)', _ref2.x = { 0: 70 * p.direction }, _ref2.y = { 0: -20 }, _ref2.direction = [this._props.direction, -1 * this._props.direction], _ref2.pathScale = [1, .75], _ref2.isTimelineLess = true, _ref2.isForce3d = true, _ref2));
+
+	    var dustTween = new mojs.Tween({
+	      onUpdate: function onUpdate(p) {
+	        _this2.el.style['transform'] = 'translateX(' + -120 * p * _this2._props.direction + 'px)';
+	      },
+	      delay: p.delay,
+	      duration: _constants2.default.LINE1_DURATION / 2
+	    });
+
+	    this.timeline = new mojs.Timeline();
+	    this.timeline.add(dust, dustTrail, dustTween);
+	  };
+	  /*
+	    Method to set `el` styles.
+	    @private
+	  */
+
+
+	  Dust.prototype._setStyles = function _setStyles() {
+	    this.el.style['overflow'] = 'hidden';
+	    this.el.style['position'] = 'absolute';
+	    // this.el.style[ 'border' ] = '1px solid white';
+	    this.el.style['width'] = '140px';
+	    this.el.style['height'] = '40px';
+	    this.el.style['backface-visibility'] = 'hidden';
+	    this.el.style[mojs.h.prefix.css + 'backface-visibility'] = 'hidden';
+	    this.el.style['bottom'] = '38px';
+	    this.el.style['right'] = this._props.right;
+	  };
+
+	  return Dust;
+	}(_module2.default);
+
+	exports.default = Dust;
 
 /***/ }
 /******/ ]);

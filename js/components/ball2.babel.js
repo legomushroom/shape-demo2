@@ -63,14 +63,16 @@ class Ball2 extends Ball {
       fill:         'none',
       stroke:       COLORS.BLACK,
       strokeWidth:  3,
-      points:       3,
+      points:       5,
+      radiusY:      4,
       radius:       10,
-      angle:       -45,
+      // angle:       -45,
       isShowStart:  true,
       top:          '70%',
       left:         '52%',
       duration:     EYE_DURATION,
-      scale:        { 1: 1.1 }
+      scale:        { 1: 1.1 },
+      isForce3d:    true
     }).then({ scale:      1 });
 
     const glareOpts = {
@@ -85,6 +87,7 @@ class Ball2 extends Ball {
       scale:        { 1: 1.5 },
       x:            { 0: -2 },
       y:            { 0: -1 },
+      isForce3d:    true
     }
 
     const glareReturnOpts = { scale: 1, x: 0, y: 0 }
