@@ -10,22 +10,28 @@ class Trail extends Module {
       shape:      'curve',
       radiusY:    3,
       radiusX:    25,
+      top:          '26%',
+      left:         -42,
+      angle:        205,
+      delay:        p.delay,
+      duration:     C.LINE1_DURATION/6,
+      strokeWidth:  { 10: 2 },
+      isShowEnd:    false,
+      easing:       'linear.none',
+      opacity:      .75,
       strokeDasharray:  '100%',
       strokeDashoffset: {'100%': '0%'},
-      top:        '26%',
-      left:       -42,
-      angle:      205,
-      delay:      p.delay,
-      duration:   C.LINE1_DURATION/4,
-      strokeWidth: { 20: 7 },
-      isShowStart: true,
-      easing:     'linear.none',
-      opacity:    .75
     }
 
     this.trailReturn = {
       easing: 'linear.none',
       strokeDashoffset: '100%',
+      onUpdate () {
+        this.isIt && console.log('update');
+      },
+      onComplete () {
+        this.isIt && console.log('complete');
+      }
     }
   }
 
@@ -62,6 +68,12 @@ class Trail extends Module {
       duration: C.LINE1_DURATION/6,
       ...this.trailReturn
     });
+
+    if ( this._o.isIt ) {
+      // console.log()
+      trail2._modules[1].tween.isIt = true;
+    }
+
 
     this.timeline = new mojs.Timeline();
     this.timeline.add( trail1, trail2 );

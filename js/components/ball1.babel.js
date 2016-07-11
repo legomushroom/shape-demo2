@@ -1,6 +1,6 @@
 import Ball        from './ball';
-import Trail       from './trail';
-import RightTrail  from './right-trail';
+// import Trail       from './trail';
+// import RightTrail  from './right-trail';
 import COLORS      from './colors';
 import C            from './constants';
 
@@ -184,48 +184,22 @@ class Ball2 extends Ball {
         isShowEnd:    false
       });
 
-    // const speechMouth2 = new mojs.Shape({
-    //   ...speechOpts,
-    //   x:            { 0: -12 }
-    // })
-    // .then({
-    //   ...speechReturn,
-    //   x:           -10
-    // })
-    // .then({
-    //   scaleY:       6,
-    //   scaleX:       3,
-    //   x:           -8
-    // })
-    // .then(speechReturn)
-    // .then({
-    //   scaleY:       4,
-    //   scaleX:       6,
-    // }).then({
-    //   ...speechReturn,
-    //   isShowEnd:    false
-    // });
 
     const noise = mojs.easing.path('M0,100 L24.2114672,99.7029845 L27.0786839,106.645089 L29.2555809,93.3549108 L32.0340385,103.816964 L35.3459816,94.6015626 L38.3783493,103.092634 L41.0513382,95.9547991 L43.7739944,106.645089 L45.6729927,96.8973214 L50,105.083147 L53.3504448,93.3549108 L57.7360497,103.816964 L60.8616066,95.9547991 L65.0345993,103.092634 L68.6997757,97.5106029 L71.6646194,102.03125 L75.5066986,96.5672433 L78.2949219,102.652344 L81.0313873,96.8973214 L84.0174408,102.328264 L86.0842667,97.7332592 L88.7289352,101.606306 L91.1429977,98.3533763 L94.3822556,101.287388 L97.0809174,98.7254467 L100,100');
 
-    this.face.style[ 'backface-visibility' ] = 'hidden';
-    this.face.style[ `${mojs.h.prefix.css}backface-visibility` ] = 'hidden';
-
-    this.face2.style[ 'backface-visibility' ] = 'hidden';
-    this.face2.style[ `${mojs.h.prefix.css}backface-visibility` ] = 'hidden';
+    mojs.h.force3d( this.face );
+    mojs.h.force3d( this.face2 );
 
     const mouthNoize = new mojs.Tween({
       duration: 3*C.LINE1_DURATION,
       onUpdate: ( ep, p ) => {
         let proc = noise(p);
-        this.face2.style[ 'transform' ] = `
-          translateX(${ 25*proc }px)
-          translateY(${ -25*proc }px)
-        `;
-        this.face.style[ 'transform' ] = `
-          translateX(${ -15*proc }px)
-          translateY(${ 15*proc }px)
-        `;
+        const transform1 = `translateX(${ 25*proc }px) translateY(${ -25*proc }px)`;
+        const transform2 = `translateX(${ -15*proc }px) translateY(${ 15*proc }px)`;
+        this.face2.style[ `${mojs.h.prefix.css}transform` ] = transform1;
+        this.face2.style[ 'transform' ] = transform1;
+        this.face.style[ `${mojs.h.prefix.css}transform` ] = transform2;
+        this.face.style[ 'transform' ]  = transform2;
       }
     });
 
@@ -288,8 +262,8 @@ class Ball2 extends Ball {
     return [
       disappointMouth, speechMouth1,
       angerMouth, angerMouthBackground, mouthNoize,
-      new Trail({ parent: this.el, delay: 3.15*C.LINE1_DURATION }),
-      new RightTrail({ parent: this.el, delay: .65*C.LINE1_DURATION })
+      // new Trail({ parent: this.el, delay: 3.175*C.LINE1_DURATION }),
+      // new RightTrail({ parent: this.el, delay: .65*C.LINE1_DURATION, isIt: true })
     ]
   }
 }

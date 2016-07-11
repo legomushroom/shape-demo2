@@ -1,12 +1,11 @@
 import Ball        from './ball';
-import Trail       from './trail';
-import RightTrail  from './right-trail';
-import Collision   from './collision';
+// import Trail       from './trail';
+// import RightTrail  from './right-trail';
+// import Collision   from './collision';
 import COLORS      from './colors';
 import C           from './constants';
 
 require('../../css/blocks/ball.postcss.css');
-// let CLASSES = require('../../css/blocks/ball.postcss.css.json');
 
 class Ball4 extends Ball {
   /*
@@ -23,7 +22,6 @@ class Ball4 extends Ball {
       dashStart = '30% 100%',
       easing = mojs.easing.path('M0,100 L15,100 C47.3046875,-362.261716 100,5.68434189e-14 100,5.68434189e-14'),
       scaleSize = .35;
-
 
     this.face.style[ 'backface-visibility' ] = 'hidden';
     this.face.style[ `${mojs.h.prefix.css}backface-visibility` ] = 'hidden';
@@ -53,8 +51,7 @@ class Ball4 extends Ball {
     }).then({
       angle:            startAngle,
       delay:            C.LINE1_DURATION,
-      strokeDasharray: dashStart,
-      // x: 0,
+      strokeDasharray:  dashStart,
       onUpdate: (pe, p) => {
         let proc = easing(p);
         this.face.style[ 'transform' ] = `
@@ -66,9 +63,9 @@ class Ball4 extends Ball {
 
     return timeline.add(
       mouth,
-      (new Trail({ parent: this.el, delay: 2.7*C.LINE1_DURATION })),
-      (new RightTrail({ parent: this.el, delay: 1.1*C.LINE1_DURATION })),
-      new Collision({ parent: this.el, delay: 3*C.LINE1_DURATION })
+      // (new Trail({ parent: this.el, delay: 2.7*C.LINE1_DURATION })),
+      // (new RightTrail({ parent: this.el, delay: 1.1*C.LINE1_DURATION })),
+      // new Collision({ parent: this.el, delay: 3*C.LINE1_DURATION })
     );
   }
 }

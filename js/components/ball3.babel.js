@@ -155,36 +155,23 @@ class Ball3 extends Ball {
 
     const lidOpts = {
       shape:        'rect',
-      // stroke:       COLORS.BLACK,
-      // strokeWidth:  3,
-      // strokeLinecap: 'round',
       fill:         COLORS.BLACK,
       radius:       10,
-      // angle:        135,
-      isShowStart:  true,
-      isShowEnd:    true,
       parent:       this.eye1,
       left:         '50%',
       top:          '-32%',
       y:            { [yShift]: 1 },
       duration:     duration,
       delay:        C.LINE1_DURATION,
-      // isForce3d:    true
+      isShowStart:  true,
+      isShowEnd:    true,
     }
     const lid1 = new mojs.Shape(lidOpts)
-      // .then({
-      //   y:            yShift,
-      //   delay:        2*C.LINE1_DURATION - duration,
-      // });
 
     const lid2 = new mojs.Shape({
       ...lidOpts,
       parent:       this.eye2,
     })
-    // .then({
-    //   y:            yShift,
-    //   delay:        2*C.LINE1_DURATION - duration,
-    // });
 
     return [ ];
   }

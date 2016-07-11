@@ -1,5 +1,5 @@
 import Ball       from './ball';
-import Collision  from './collision';
+// import Collision  from './collision';
 import COLORS     from './colors';
 import C          from './constants';
 
@@ -73,7 +73,7 @@ class Ball2 extends Ball {
       duration:     EYE_DURATION,
       scale:        { 1: 1.1 },
       isForce3d:    true
-    }).then({ scale:      1 });
+    }).then({ scale: 1 });
 
     const glareOpts = {
       parent:       this.face,
@@ -103,7 +103,7 @@ class Ball2 extends Ball {
     this.eyesTimeline.add( eye1, eye2, mouth, glare1, glare2 );
     this.timeline.add(
       this.eyesTimeline,
-      new Collision({ parent: this.el, delay: C.LINE1_DURATION, direction: -1 })
+      // new Collision({ parent: this.el, delay: C.LINE1_DURATION, direction: -1 })
     )
   }
 }
