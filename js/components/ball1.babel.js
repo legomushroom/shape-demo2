@@ -7,7 +7,7 @@ import C            from './constants';
 require('../../css/blocks/ball.postcss.css');
 // let CLASSES = require('../../css/blocks/ball.postcss.css.json');
 
-class Ball2 extends Ball {
+class Ball1 extends Ball {
   /*
     Method for initial module's render.
     @private
@@ -75,7 +75,8 @@ class Ball2 extends Ball {
       y:            { 0: lidUp.y },
       duration:     40,
       timeline:     {  repeat: 5 },
-      isForce3d:    true
+      isForce3d:    true,
+      isRefreshState: false
     }
 
     const lidReturn = { y: lidUp.y - 5 }
@@ -268,4 +269,4 @@ class Ball2 extends Ball {
   }
 }
 
-export default Ball2;
+export default Ball1;

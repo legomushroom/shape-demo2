@@ -21,7 +21,7 @@ class Dust extends Module {
 
     const dustOpts = {
       parent:  this.el,
-      isShowStart: true,
+      // isShowStart: true,
       radius: 20,
       top: '100%',
       left: '50%',

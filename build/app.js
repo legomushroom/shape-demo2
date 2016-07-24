@@ -91,15 +91,15 @@
 
 	var _ball4 = _interopRequireDefault(_ball3);
 
-	var _ball5 = __webpack_require__(97);
+	var _ball5 = __webpack_require__(95);
 
 	var _ball6 = _interopRequireDefault(_ball5);
 
-	var _ball7 = __webpack_require__(98);
+	var _ball7 = __webpack_require__(96);
 
 	var _ball8 = _interopRequireDefault(_ball7);
 
-	var _ball9 = __webpack_require__(99);
+	var _ball9 = __webpack_require__(97);
 
 	var _ball10 = _interopRequireDefault(_ball9);
 
@@ -107,24 +107,24 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(94);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _dust = __webpack_require__(111);
+	var _dust = __webpack_require__(98);
 
 	var _dust2 = _interopRequireDefault(_dust);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(100);
-	var CLASSES = __webpack_require__(102);
+	__webpack_require__(99);
+	var CLASSES = __webpack_require__(101);
 
-	__webpack_require__(103);
-	var LINE_CLASSES = __webpack_require__(105);
+	__webpack_require__(102);
+	var LINE_CLASSES = __webpack_require__(104);
 
-	__webpack_require__(106);
-	var SCENE_CLASSES = __webpack_require__(108);
+	__webpack_require__(105);
+	var SCENE_CLASSES = __webpack_require__(107);
 
 	var LINE2_SHIFT = 8;
 	var LINE3_SHIFT = 12;
@@ -2890,7 +2890,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(94);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -2903,11 +2903,11 @@
 	__webpack_require__(89);
 	// let CLASSES = require('../../css/blocks/ball.postcss.css.json');
 
-	var Ball2 = function (_Ball) {
-	  (0, _inherits3.default)(Ball2, _Ball);
+	var Ball1 = function (_Ball) {
+	  (0, _inherits3.default)(Ball1, _Ball);
 
-	  function Ball2() {
-	    (0, _classCallCheck3.default)(this, Ball2);
+	  function Ball1() {
+	    (0, _classCallCheck3.default)(this, Ball1);
 	    return (0, _possibleConstructorReturn3.default)(this, _Ball.apply(this, arguments));
 	  }
 
@@ -2916,7 +2916,7 @@
 	    @private
 	  */
 
-	  Ball2.prototype._render = function _render() {
+	  Ball1.prototype._render = function _render() {
 	    _Ball.prototype._render.call(this);
 	    this.el.classList.add('ball--1');
 
@@ -2928,7 +2928,7 @@
 	    this.timeline.add(this._addEyes(), this._addMouth());
 	  };
 
-	  Ball2.prototype._addEyes = function _addEyes() {
+	  Ball1.prototype._addEyes = function _addEyes() {
 	    var _x, _y, _x2, _x3;
 
 	    var eyeX = -5;
@@ -2974,7 +2974,8 @@
 	      y: { 0: lidUp.y },
 	      duration: 40,
 	      timeline: { repeat: 5 },
-	      isForce3d: true
+	      isForce3d: true,
+	      isRefreshState: false
 	    };
 
 	    var lidReturn = { y: lidUp.y - 5 };
@@ -3029,7 +3030,7 @@
 	    return [eye1, eye2, lidTimeline, brow1, brow2];
 	  };
 
-	  Ball2.prototype._addMouth = function _addMouth() {
+	  Ball1.prototype._addMouth = function _addMouth() {
 	    var _this2 = this;
 
 	    var mouthDuration = 50;
@@ -3145,16 +3146,15 @@
 	    return [disappointMouth, speechMouth1, angerMouth, angerMouthBackground, mouthNoize];
 	  };
 
-	  return Ball2;
+	  return Ball1;
 	}(_ball2.default);
 
 	// new Trail({ parent: this.el, delay: 3.175*C.LINE1_DURATION }),
 	// new RightTrail({ parent: this.el, delay: .65*C.LINE1_DURATION, isIt: true })
-	exports.default = Ball2;
+	exports.default = Ball1;
 
 /***/ },
-/* 94 */,
-/* 95 */
+/* 94 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3165,8 +3165,7 @@
 	};
 
 /***/ },
-/* 96 */,
-/* 97 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3197,7 +3196,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(94);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -3323,7 +3322,7 @@
 	exports.default = Ball2;
 
 /***/ },
-/* 98 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3354,7 +3353,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(94);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -3486,7 +3485,8 @@
 	      y: { 0: xShift / 2 },
 	      duration: duration,
 	      delay: _constants2.default.LINE1_DURATION,
-	      isForce3d: true
+	      isForce3d: true,
+	      isRefreshState: false
 	    };
 	    var brow1 = new mojs.Shape(browOpts).then({
 	      x: -xShift / 4,
@@ -3547,7 +3547,7 @@
 	exports.default = Ball3;
 
 /***/ },
-/* 99 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3574,7 +3574,7 @@
 
 	var _colors2 = _interopRequireDefault(_colors);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(94);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -3659,151 +3659,7 @@
 	exports.default = Ball4;
 
 /***/ },
-/* 100 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(101);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(92)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/postcss-loader/index.js!./main.postcss.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/postcss-loader/index.js!./main.postcss.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 101 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(91)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "body, html {\n  font-size: 16px;\n}\n\n\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 102 */
-/***/ function(module, exports) {
-
-	module.exports = {};
-
-/***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(104);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(92)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/postcss-loader/index.js!./line.postcss.css", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/postcss-loader/index.js!./line.postcss.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 104 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(91)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".line {\n}\n.line:before, .line:after {\n    content: '';\n    position: absolute\n}\n.line:before {\n    width: 16px;\n    width: 1rem;\n    height: 10px;\n    height: 0.625rem;\n    border-radius: 1rem;\n    background: #29363B;\n    top: 50%;\n    left: 1px;\n    left: 0.0625rem;\n    margin-top: -5px;\n    margin-top: -0.3125rem;\n    margin-left: -16px;\n    margin-left: -1rem\n}", ""]);
-
-	// exports
-
-
-/***/ },
-/* 105 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"line": "_line_13xym_3"
-	};
-
-/***/ },
-/* 106 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(107);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(92)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/postcss-loader/index.js!./scene.postcss.css", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/postcss-loader/index.js!./scene.postcss.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 107 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(91)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".scene {\n  /*outline:      1px solid white;*/\n  width:        400px;\n  width:        25rem;\n  height:        370px;\n  height:       23.125rem;\n  position:     absolute;\n  left:         50%;\n  top:          50%;\n  margin-left:        -200px;\n  margin-left:  -12.5rem;\n  margin-top:        -185px;\n  margin-top:   -11.5625rem\n}\n.scene__bar {\n  background:        #29363B;\n  height:        4px;\n  height:        0.25rem;\n  border-radius:        0.9375rem\n}\n.scene__dust {\n  width:        240px;\n  width:        15rem;\n  height:        200px;\n  height:        12.5rem;\n  /*border: 1px solid white;*/\n  position:        absolute;\n  bottom:        37.5px;\n  bottom:        2.34375rem;\n  right:        -180px;\n  right:        -11.25rem;\n  overflow:        hidden;\n  z-index:        1\n}\n.scene__bar-handle {\n  position:        absolute;\n  width:        10px;\n  width:        0.625rem;\n  height:        16px;\n  height:        1rem;\n  border-radius:        0.625rem;\n  background:        #29363B;\n  top:        -5px;\n  top:        -0.3125rem;\n  z-index:        1\n}\n.scene__bar-handle:nth-of-type(1) {\n  margin-left:        47px;\n  margin-left:        2.9375rem\n}\n.scene__bar-handle:nth-of-type(2) {\n  margin-left:        143px;\n  margin-left:        8.9375rem\n}\n.scene__bar-handle:nth-of-type(3) {\n  margin-left:        239px;\n  margin-left:        14.9375rem\n}\n.scene__bar-handle:nth-of-type(4) {\n  margin-left:        335px;\n  margin-left:        20.9375rem\n}", ""]);
-
-	// exports
-
-
-/***/ },
-/* 108 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"scene": "_scene_y2oup_5"
-	};
-
-/***/ },
-/* 109 */,
-/* 110 */,
-/* 111 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3830,7 +3686,7 @@
 
 	var _module2 = _interopRequireDefault(_module);
 
-	var _constants = __webpack_require__(95);
+	var _constants = __webpack_require__(94);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -3864,7 +3720,7 @@
 
 	    var dustOpts = (_dustOpts = {
 	      parent: this.el,
-	      isShowStart: true,
+	      // isShowStart: true,
 	      radius: 20,
 	      top: '100%',
 	      left: '50%',
@@ -3929,6 +3785,148 @@
 	}(_module2.default);
 
 	exports.default = Dust;
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(100);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(92)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/postcss-loader/index.js!./main.postcss.css", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/postcss-loader/index.js!./main.postcss.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(91)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "body, html {\n  font-size: 16px;\n}\n\n\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 101 */
+/***/ function(module, exports) {
+
+	module.exports = {};
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(103);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(92)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/postcss-loader/index.js!./line.postcss.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/postcss-loader/index.js!./line.postcss.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(91)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".line {\n}\n.line:before, .line:after {\n    content: '';\n    position: absolute\n}\n.line:before {\n    width: 16px;\n    width: 1rem;\n    height: 10px;\n    height: 0.625rem;\n    border-radius: 1rem;\n    background: #29363B;\n    top: 50%;\n    left: 1px;\n    left: 0.0625rem;\n    margin-top: -5px;\n    margin-top: -0.3125rem;\n    margin-left: -16px;\n    margin-left: -1rem\n}", ""]);
+
+	// exports
+
+
+/***/ },
+/* 104 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"line": "_line_13xym_3"
+	};
+
+/***/ },
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(106);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(92)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/postcss-loader/index.js!./scene.postcss.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/postcss-loader/index.js!./scene.postcss.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(91)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".scene {\n  /*outline:      1px solid white;*/\n  width:        400px;\n  width:        25rem;\n  height:        370px;\n  height:       23.125rem;\n  position:     absolute;\n  left:         50%;\n  top:          50%;\n  margin-left:        -200px;\n  margin-left:  -12.5rem;\n  margin-top:        -185px;\n  margin-top:   -11.5625rem\n}\n.scene__bar {\n  background:        #29363B;\n  height:        4px;\n  height:        0.25rem;\n  border-radius:        0.9375rem\n}\n.scene__dust {\n  width:        240px;\n  width:        15rem;\n  height:        200px;\n  height:        12.5rem;\n  /*border: 1px solid white;*/\n  position:        absolute;\n  bottom:        37.5px;\n  bottom:        2.34375rem;\n  right:        -180px;\n  right:        -11.25rem;\n  overflow:        hidden;\n  z-index:        1\n}\n.scene__bar-handle {\n  position:        absolute;\n  width:        10px;\n  width:        0.625rem;\n  height:        16px;\n  height:        1rem;\n  border-radius:        0.625rem;\n  background:        #29363B;\n  top:        -5px;\n  top:        -0.3125rem;\n  z-index:        1\n}\n.scene__bar-handle:nth-of-type(1) {\n  margin-left:        47px;\n  margin-left:        2.9375rem\n}\n.scene__bar-handle:nth-of-type(2) {\n  margin-left:        143px;\n  margin-left:        8.9375rem\n}\n.scene__bar-handle:nth-of-type(3) {\n  margin-left:        239px;\n  margin-left:        14.9375rem\n}\n.scene__bar-handle:nth-of-type(4) {\n  margin-left:        335px;\n  margin-left:        20.9375rem\n}", ""]);
+
+	// exports
+
+
+/***/ },
+/* 107 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"scene": "_scene_y2oup_5"
+	};
 
 /***/ }
 /******/ ]);

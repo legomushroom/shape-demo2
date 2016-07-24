@@ -122,7 +122,8 @@ class Ball3 extends Ball {
       y:            { 0:  xShift/2 },
       duration:     duration,
       delay:        C.LINE1_DURATION,
-      isForce3d:    true
+      isForce3d:    true,
+      isRefreshState: false
     }
     const brow1 = new mojs.Shape(browOpts)
       .then({
